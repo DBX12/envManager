@@ -88,3 +88,8 @@ func (r Registry) HasProfile(name string) bool {
 	_, exists := r.profiles[name]
 	return exists
 }
+
+//GetAllStorages returns all storages known to the registry
+func (r Registry) GetAllStorages() map[string]StorageAdapter {
+	return r.storages
+}
