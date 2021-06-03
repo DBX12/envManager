@@ -1,5 +1,9 @@
 package secretsStorage
 
+import (
+	"gopkg.in/errgo.v2/fmt/errors"
+)
+
 //StorageAdapter provides methods to interact with a secrets secretsStorage (e.g. keepass)
 type StorageAdapter interface {
 	//GetEntry retrieves an entry from the secretsStorage. The entry is addressed by the key parameter, it depends on the
@@ -11,4 +15,25 @@ type StorageAdapter interface {
 	//It returns an error value indicating if the validation was successful and a slice of strings containing information
 	//for the user.
 	Validate() (error, []string)
+}
+
+//CreateStorageAdapter is a factory method which creates a specific storage adapter determined by data["type"] and calls
+//StorageAdapter.Validate on the created instance. Should StorageAdapter.Validate return an error, it is handed through
+//to the caller of CreateStorageAdapter
+func CreateStorageAdapter(name string, config Storage) (StorageAdapter, error) {
+	var storage StorageAdapter
+	switch config.StorageType {
+	case KeepassTypeIdentifier:
+		storage = &Keepass{
+			Name:     name,
+			FilePath: config.Config["path"],
+		}
+	default:
+		return nil, errors.Newf("Unknown storage type %s", config.StorageType)
+	}
+	err, _ := storage.Validate()
+	if err != nil {
+		return nil, err
+	}
+	return storage, err
 }

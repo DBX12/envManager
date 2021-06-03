@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const KeepassTypeIdentifier = "keepass"
+
 type Keepass struct {
 	Name     string
 	FilePath string
