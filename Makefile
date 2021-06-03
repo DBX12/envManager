@@ -9,4 +9,4 @@ clean:
 deps:
 	go mod tidy
 test:
-	go test
+	go test ./...
