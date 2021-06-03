@@ -1,0 +1,29 @@
+storages:
+  test:
+    type: keepass
+    config:
+      path: /home/dbx12/GoLandProjects/envManager/data/demo.kdbx
+  other:
+    type: keepass
+    config:
+      path: /home/dbx12/GoLandProjects/envManager/data/demo.kdbx
+profiles:
+  root:
+    storage: test
+    path: entry1
+    constEnv:
+      ROOT_PROF: rootbar
+  prof1:
+    storage: test
+    path: group1/g1e1
+    env:
+      PROF1_USER: UserName
+      PROF1_PASS: Password
+    constEnv:
+      PROF1_CONST: foobar
+    dependsOn:
+      - root
+  otherProfile:
+    storage: other
+    constEnv:
+      OTHER: profile
