@@ -104,3 +104,31 @@ func (p *Profile) AddToEnvironment(env *environment.Environment) error {
 	}
 	return nil
 }
+
+//RemoveFromEnvironment removes the environment variables defined by this profile
+//from the given environment.Environment instance.
+func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
+	if p.visited {
+		// skip if already visited
+		return nil
+	}
+	// unload constEnv
+	for key, _ := range p.ConstEnv {
+		err := env.Unset(key)
+		if err != nil {
+			return err
+		}
+	}
+
+	// unload env from storage
+	if len(p.Env) > 0 {
+		for key, _ := range p.Env {
+			err := env.Unset(key)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	p.visited = true
+	return nil
+}
