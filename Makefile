@@ -1,4 +1,4 @@
-BINARY_NAME=main
+BINARY_NAME=envManager
 
 all: build
 
