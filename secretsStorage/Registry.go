@@ -99,3 +99,21 @@ func (r Registry) GetAllStorages() map[string]StorageAdapter {
 func (r Registry) GetAllProfiles() map[string]Profile {
 	return r.profiles
 }
+
+//GetStorageNames returns the names of all storages known to the registry
+func (r Registry) GetStorageNames() []string {
+	var out []string
+	for name, _ := range r.storages {
+		out = append(out, name)
+	}
+	return out
+}
+
+//GetProfileNames returns all profiles names known to the registry
+func (r Registry) GetProfileNames() []string {
+	var out []string
+	for name, _ := range r.profiles {
+		out = append(out, name)
+	}
+	return out
+}
