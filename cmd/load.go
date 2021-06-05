@@ -8,11 +8,12 @@ import (
 
 // loadCmd represents the load command
 var loadCmd = &cobra.Command{
-	Use:   "load",
-	Short: "Load profiles",
-	Long:  `Load one or more profiles to this shell's environment`,
-	Run:   runLoad,
-	Args:  cobra.MinimumNArgs(1),
+	Use:               "load",
+	Short:             "Load profiles",
+	Long:              `Load one or more profiles to this shell's environment`,
+	Run:               runLoad,
+	Args:              cobra.MinimumNArgs(1),
+	ValidArgsFunction: CompleteProfiles,
 }
 
 func runLoad(_ *cobra.Command, args []string) {

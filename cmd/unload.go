@@ -8,11 +8,12 @@ import (
 
 // unloadCmd represents the unload command
 var unloadCmd = &cobra.Command{
-	Use:   "unload",
-	Short: "Unload profiles",
-	Long:  `Unload one or more profiles from this shell's environment`,
-	Run:   runUnload,
-	Args:  cobra.MinimumNArgs(1),
+	Use:               "unload",
+	Short:             "Unload profiles",
+	Long:              `Unload one or more profiles from this shell's environment`,
+	Run:               runUnload,
+	Args:              cobra.MinimumNArgs(1),
+	ValidArgsFunction: CompleteProfiles,
 }
 
 func runUnload(_ *cobra.Command, args []string) {
