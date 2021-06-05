@@ -94,3 +94,8 @@ func (r Registry) HasProfile(name string) bool {
 func (r Registry) GetAllStorages() map[string]StorageAdapter {
 	return r.storages
 }
+
+//GetAllProfiles returns all profiles known to the registry
+func (r Registry) GetAllProfiles() map[string]Profile {
+	return r.profiles
+}
