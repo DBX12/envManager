@@ -60,13 +60,8 @@ func (p Profile) Validate() []string {
 }
 
 //AddToEnvironment adds the environment variables defined by this profile to the
-//given environment.Environment instance. After that, it will load all profiles
-//which are listed as dependency of this profile.
+//given environment.Environment instance.
 func (p *Profile) AddToEnvironment(env *environment.Environment) error {
-	if p.visited {
-		// skip if already visited
-		return nil
-	}
 	// load constEnv
 	for key, value := range p.ConstEnv {
 		err := env.Set(key, value)
@@ -94,15 +89,6 @@ func (p *Profile) AddToEnvironment(env *environment.Environment) error {
 			if err != nil {
 				return err
 			}
-		}
-	}
-	p.visited = true
-	for i := 0; i < len(p.DependsOn); i++ {
-		profileName := p.DependsOn[i]
-		profile, _ := GetRegistry().GetProfile(profileName)
-		err := profile.AddToEnvironment(env)
-		if err != nil {
-			return err
 		}
 	}
 	return nil
