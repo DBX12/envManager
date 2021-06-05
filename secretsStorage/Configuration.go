@@ -2,7 +2,9 @@ package secretsStorage
 
 import (
 	"envManager/environment"
+	"envManager/helper"
 	"fmt"
+	"gopkg.in/errgo.v2/fmt/errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 )
@@ -132,4 +134,29 @@ func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
 	}
 	p.visited = true
 	return nil
+}
+
+//GetDependencies gets the dependencies of this profile and its dependencies.
+func (p Profile) GetDependencies(alreadyVisited []string) ([]string, error) {
+	var dependencies []string
+	alreadyVisited = append(alreadyVisited, p.Name)
+	dependencies = append(dependencies, p.DependsOn...)
+	for _, name := range p.DependsOn {
+		if helper.SliceStringContains(name, alreadyVisited) {
+			// do not load dependencies of a profile we already visited
+			continue
+		}
+		childProfile, err := GetRegistry().GetProfile(name)
+		if err != nil {
+			return nil, errors.Newf("Unknown dependency %s", name)
+		}
+		alreadyVisited = append(alreadyVisited, name)
+		childDeps, err := childProfile.GetDependencies(alreadyVisited)
+		if err != nil {
+			return nil, err
+		}
+		dependencies = append(dependencies, childDeps...)
+	}
+	dependencies = helper.SliceStringRemove(p.Name, dependencies)
+	return dependencies, nil
 }
