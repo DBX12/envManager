@@ -18,6 +18,7 @@ type Storage struct {
 }
 
 type Profile struct {
+	Name      string
 	Storage   string            `yaml:"storage"`
 	Path      string            `yaml:"path"`
 	ConstEnv  map[string]string `yaml:"constEnv"`
