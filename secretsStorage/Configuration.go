@@ -26,7 +26,6 @@ type Profile struct {
 	ConstEnv  map[string]string `yaml:"constEnv"`
 	Env       map[string]string `yaml:"env"`
 	DependsOn []string          `yaml:"dependsOn"`
-	visited   bool
 }
 
 func LoadConfigurationFromFile(path string) (*Configuration, error) {
@@ -97,12 +96,8 @@ func (p *Profile) AddToEnvironment(env *environment.Environment) error {
 //RemoveFromEnvironment removes the environment variables defined by this profile
 //from the given environment.Environment instance.
 func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
-	if p.visited {
-		// skip if already visited
-		return nil
-	}
 	// unload constEnv
-	for key, _ := range p.ConstEnv {
+	for key := range p.ConstEnv {
 		err := env.Unset(key)
 		if err != nil {
 			return err
@@ -111,14 +106,13 @@ func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
 
 	// unload env from storage
 	if len(p.Env) > 0 {
-		for key, _ := range p.Env {
+		for key := range p.Env {
 			err := env.Unset(key)
 			if err != nil {
 				return err
 			}
 		}
 	}
-	p.visited = true
 	return nil
 }
 
