@@ -35,14 +35,21 @@ func newRegistry() *Registry {
 	}
 }
 
+//AddStorage adds a storage adapter to the registry. If the given name already exists, the old storage adapter will be
+//replaced. Will return an error if the storage name is empty or the storage adapter is nil.
 func (r *Registry) AddStorage(name string, storage StorageAdapter) error {
 	if name == "" {
 		return errors.New("name cannot be empty")
+	}
+	if storage == nil {
+		return errors.New("storage cannot be nil")
 	}
 	r.storages[name] = storage
 	return nil
 }
 
+//AddProfile adds a profile to the registry. If the given name already exists, the old profile instance will be
+//replaced. Will return an error if the profile name is empty.
 func (r *Registry) AddProfile(name string, profile Profile) error {
 	if name == "" {
 		return errors.New("name cannot be empty")
@@ -103,7 +110,7 @@ func (r Registry) GetAllProfiles() map[string]Profile {
 //GetStorageNames returns the names of all storages known to the registry
 func (r Registry) GetStorageNames() []string {
 	var out []string
-	for name, _ := range r.storages {
+	for name := range r.storages {
 		out = append(out, name)
 	}
 	return out
@@ -112,7 +119,7 @@ func (r Registry) GetStorageNames() []string {
 //GetProfileNames returns all profiles names known to the registry
 func (r Registry) GetProfileNames() []string {
 	var out []string
-	for name, _ := range r.profiles {
+	for name := range r.profiles {
 		out = append(out, name)
 	}
 	return out
