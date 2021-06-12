@@ -40,3 +40,23 @@ func CreateStorageAdapter(name string, config Storage) (StorageAdapter, error) {
 	}
 	return storage, err
 }
+
+//GetStorageAdapterTypes returns a list of type identifiers for storage adapters
+func GetStorageAdapterTypes() []string {
+	return []string{
+		KeepassTypeIdentifier,
+	}
+}
+
+//GetStorageAdapterDefaultConfig returns the default config for a given storage type
+func GetStorageAdapterDefaultConfig(storageType string) (map[string]string, error) {
+	var storage StorageAdapter
+	switch storageType {
+	case KeepassTypeIdentifier:
+		storage = &Keepass{}
+	default:
+		return nil, errors.Newf("Unknown storage type %s", storageType)
+	}
+
+	return storage.GetDefaultConfig(), nil
+}
