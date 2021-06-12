@@ -50,8 +50,8 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	//TODO replace hardcoded dev path with one from home dir
-	config, err := secretsStorage.LoadConfigurationFromFile("/home/dbx12/GoLandProjects/envManager/data/envManager.yml")
+	config := secretsStorage.NewConfiguration()
+	err := config.LoadFromFile(flagConfigFile)
 	cobra.CheckErr(err)
 
 	registry := secretsStorage.GetRegistry()

@@ -37,18 +37,19 @@ func NewConfiguration() Configuration {
 	}
 }
 
-func LoadConfigurationFromFile(path string) (*Configuration, error) {
+//LoadFromFile loads the config file at the given path. It will merge the current config with the config from the file.
+func (c *Configuration) LoadFromFile(path string) error {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	var config Configuration
 
-	err = yaml.Unmarshal(data, &config)
+	err = yaml.Unmarshal(data, &c)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return &config, nil
+
+	return nil
 }
 
 //WriteToFile writes the current config to given path. It will not overwrite an existing file
