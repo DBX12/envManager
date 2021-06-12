@@ -73,7 +73,7 @@ func TestRegistry_AddProfile(t *testing.T) {
 					t.Error("AddProfile() wanted error but got none")
 				}
 				profile, _ := r.GetProfile(tt.args.name)
-				if !reflect.DeepEqual(profile.Name, tt.args.name) {
+				if !reflect.DeepEqual(profile.name, tt.args.name) {
 					t.Error("Name was not injected into profile")
 				}
 			}
@@ -193,7 +193,7 @@ func TestRegistry_GetAllProfiles(t *testing.T) {
 		profiles: map[string]Profile{},
 	}
 	validProfile := Profile{
-		Name:      "profile1",
+		name:      "profile1",
 		Storage:   "test01",
 		Path:      "group1/entry1",
 		ConstEnv:  map[string]string{"const1": "cval1"},
@@ -319,7 +319,7 @@ func TestRegistry_GetProfile(t *testing.T) {
 				storages: map[string]StorageAdapter{},
 				profiles: map[string]Profile{
 					"awsMain": {
-						Name:      "awsMain",
+						name:      "awsMain",
 						Storage:   "keepass0",
 						Path:      "aws/awsMain",
 						ConstEnv:  map[string]string{},
@@ -340,7 +340,7 @@ func TestRegistry_GetProfile(t *testing.T) {
 				storages: map[string]StorageAdapter{},
 				profiles: map[string]Profile{
 					"awsMain": {
-						Name:      "awsMain",
+						name:      "awsMain",
 						Storage:   "keepass0",
 						Path:      "aws/awsMain",
 						ConstEnv:  map[string]string{},
@@ -353,7 +353,7 @@ func TestRegistry_GetProfile(t *testing.T) {
 				name: "awsMain",
 			},
 			want: &Profile{
-				Name:      "awsMain",
+				name:      "awsMain",
 				Storage:   "keepass0",
 				Path:      "aws/awsMain",
 				ConstEnv:  map[string]string{},
@@ -368,7 +368,7 @@ func TestRegistry_GetProfile(t *testing.T) {
 				storages: map[string]StorageAdapter{},
 				profiles: map[string]Profile{
 					"awsMain": {
-						Name:      "awsMain",
+						name:      "awsMain",
 						Storage:   "keepass0",
 						Path:      "aws/awsMain",
 						ConstEnv:  map[string]string{},
@@ -426,7 +426,7 @@ func TestRegistry_GetProfileNames(t *testing.T) {
 				storages: map[string]StorageAdapter{},
 				profiles: map[string]Profile{
 					"awsMain": {
-						Name:      "awsMain",
+						name:      "awsMain",
 						Storage:   "keepass0",
 						Path:      "aws/main",
 						ConstEnv:  map[string]string{},
@@ -434,7 +434,7 @@ func TestRegistry_GetProfileNames(t *testing.T) {
 						DependsOn: []string{},
 					},
 					"awsProd": {
-						Name:      "awsProd",
+						name:      "awsProd",
 						Storage:   "keepass0",
 						Path:      "aws/main",
 						ConstEnv:  map[string]string{},
@@ -646,7 +646,7 @@ func TestRegistry_HasProfile(t *testing.T) {
 				storages: map[string]StorageAdapter{},
 				profiles: map[string]Profile{
 					"awsProd": {
-						Name:      "awsProd",
+						name:      "awsProd",
 						Storage:   "keepass0",
 						Path:      "aws/prod",
 						ConstEnv:  map[string]string{},
@@ -666,7 +666,7 @@ func TestRegistry_HasProfile(t *testing.T) {
 				storages: map[string]StorageAdapter{},
 				profiles: map[string]Profile{
 					"awsProd": {
-						Name:      "awsProd",
+						name:      "awsProd",
 						Storage:   "keepass0",
 						Path:      "aws/prod",
 						ConstEnv:  map[string]string{},
@@ -686,7 +686,7 @@ func TestRegistry_HasProfile(t *testing.T) {
 				storages: map[string]StorageAdapter{},
 				profiles: map[string]Profile{
 					"awsProd": {
-						Name:      "awsProd",
+						name:      "awsProd",
 						Storage:   "keepass0",
 						Path:      "aws/prod",
 						ConstEnv:  map[string]string{},

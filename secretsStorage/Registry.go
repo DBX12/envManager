@@ -54,7 +54,7 @@ func (r *Registry) AddProfile(name string, profile Profile) error {
 	if name == "" {
 		return errors.New("name cannot be empty")
 	}
-	profile.Name = name
+	profile.SetName(name)
 	r.profiles[name] = profile
 	return nil
 }

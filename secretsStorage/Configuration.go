@@ -21,7 +21,7 @@ type Storage struct {
 }
 
 type Profile struct {
-	Name      string
+	name      string
 	Storage   string            `yaml:"storage"`
 	Path      string            `yaml:"path"`
 	ConstEnv  map[string]string `yaml:"constEnv"`
@@ -142,10 +142,14 @@ func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
 	return nil
 }
 
+func (p *Profile) SetName(name string) {
+	p.name = name
+}
+
 //GetDependencies gets the dependencies of this profile and its dependencies.
 func (p Profile) GetDependencies(alreadyVisited []string) ([]string, error) {
 	var dependencies []string
-	alreadyVisited = append(alreadyVisited, p.Name)
+	alreadyVisited = append(alreadyVisited, p.name)
 	dependencies = append(dependencies, p.DependsOn...)
 	for _, name := range p.DependsOn {
 		if helper.SliceStringContains(name, alreadyVisited) {
@@ -163,6 +167,6 @@ func (p Profile) GetDependencies(alreadyVisited []string) ([]string, error) {
 		}
 		dependencies = append(dependencies, childDeps...)
 	}
-	dependencies = helper.SliceStringRemove(p.Name, dependencies)
+	dependencies = helper.SliceStringRemove(p.name, dependencies)
 	return dependencies, nil
 }
