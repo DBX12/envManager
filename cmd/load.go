@@ -15,6 +15,7 @@ var loadCmd = &cobra.Command{
 	Run:               runLoad,
 	Args:              cobra.MinimumNArgs(1),
 	ValidArgsFunction: CompleteProfiles,
+	PreRun:            InitConfig,
 }
 
 func runLoad(_ *cobra.Command, args []string) {

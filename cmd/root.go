@@ -29,7 +29,6 @@ func Execute() {
 
 func init() {
 	debugConfigPath = "/home/dbx12/GoLandProjects/envManager/data/envManager.yml"
-	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,

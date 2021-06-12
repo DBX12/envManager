@@ -9,6 +9,7 @@ import (
 //CompleteProfiles provides completion for a command which expects at least one
 //profile.
 func CompleteProfiles(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	initConfig()
 	// complete profiles
 	completions := helper.Completion(
 		// all profiles of this storage adapter
@@ -18,4 +19,10 @@ func CompleteProfiles(_ *cobra.Command, args []string, toComplete string) ([]str
 		toComplete,
 	)
 	return completions, cobra.ShellCompDirectiveNoFileComp
+}
+
+//InitConfig is a wrapper around the simple initConfig() method. With this adapter you can write
+//PreRun: InitConfig, in your command object.
+func InitConfig(_ *cobra.Command, _ []string) {
+	initConfig()
 }

@@ -14,6 +14,7 @@ var unloadCmd = &cobra.Command{
 	Run:               runUnload,
 	Args:              cobra.MinimumNArgs(1),
 	ValidArgsFunction: CompleteProfiles,
+	PreRun:            InitConfig,
 }
 
 func runUnload(_ *cobra.Command, args []string) {
