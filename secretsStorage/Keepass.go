@@ -72,6 +72,12 @@ func (k *Keepass) GetEntry(key string) (*Entry, error) {
 	return entry, nil
 }
 
+func (k Keepass) GetDefaultConfig() map[string]string {
+	return map[string]string{
+		"FilePath": "",
+	}
+}
+
 func toEntry(kpEntry *gokeepasslib.Entry) (*Entry, error) {
 	entry := NewEntry()
 	for _, valueData := range kpEntry.Values {

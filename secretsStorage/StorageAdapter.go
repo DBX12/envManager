@@ -15,6 +15,9 @@ type StorageAdapter interface {
 	//It returns an error value indicating if the validation was successful and a slice of strings containing information
 	//for the user.
 	Validate() (error, []string)
+	//GetDefaultConfig returns the default config of the storage adapter. The return value of this function will be used
+	//to initialize a storage adapter section in the config file.
+	GetDefaultConfig() map[string]string
 }
 
 //CreateStorageAdapter is a factory method which creates a specific storage adapter determined by data["type"] and calls
