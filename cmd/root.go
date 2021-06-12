@@ -45,6 +45,7 @@ func init() {
 		debugConfigPath,
 		"Overrides the default config file to use. Defaults to ~/.envManager.yml",
 	)
+	_ = rootCmd.MarkPersistentFlagFilename("config", "yml")
 }
 
 // initConfig reads in config file and ENV variables if set.
