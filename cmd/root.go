@@ -5,6 +5,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+//TODO replace hardcoded dev path with one from home dir
+var debugConfigPath string
+var flagConfigFile string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "envManager",
@@ -24,6 +28,7 @@ func Execute() {
 }
 
 func init() {
+	debugConfigPath = "/home/dbx12/GoLandProjects/envManager/data/envManager.yml"
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
@@ -34,6 +39,13 @@ func init() {
 	// when this action is called directly.
 	//rootCmd.Flags().StringArray("load",nil, "List of profiles to load")
 	rootCmd.Flags().Bool("verbose", false, "Enable verbose output")
+	rootCmd.PersistentFlags().StringVarP(
+		&flagConfigFile,
+		"config",
+		"c",
+		debugConfigPath,
+		"Overrides the default config file to use. Defaults to ~/.envManager.yml",
+	)
 }
 
 // initConfig reads in config file and ENV variables if set.
