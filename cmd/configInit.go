@@ -6,8 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var flagForce bool
-
 // configInitCmd represents the init command
 var configInitCmd = &cobra.Command{
 	Use:   "init",
@@ -18,7 +16,7 @@ var configInitCmd = &cobra.Command{
 		emptyConfig := secretsStorage.NewConfiguration()
 		configPath, err := rootCmd.PersistentFlags().GetString("config")
 		cobra.CheckErr(err)
-		err = emptyConfig.WriteToFile(configPath, flagForce)
+		err = emptyConfig.WriteToFile(configPath, flagForceConfig)
 		cobra.CheckErr(err)
 		fmt.Printf("Configuration initialized in %s\n", configPath)
 	},
@@ -26,5 +24,4 @@ var configInitCmd = &cobra.Command{
 
 func init() {
 	configCmd.AddCommand(configInitCmd)
-	configInitCmd.Flags().BoolVarP(&flagForce, "force", "f", false, "Force initialization (will overwrite existing config)")
 }
