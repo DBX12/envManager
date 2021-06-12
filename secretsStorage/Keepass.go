@@ -47,7 +47,10 @@ func (k *Keepass) promptCredentials() string {
 
 func (k *Keepass) GetEntry(key string) (*Entry, error) {
 	if k.database == nil {
-		_ = k.openDatabase()
+		err := k.openDatabase()
+		if err != nil {
+			return nil, err
+		}
 	}
 	currentGroup := &k.database.Content.Root.Groups[0]
 	parts := strings.Split(key, "/")
@@ -114,7 +117,13 @@ func (k *Keepass) openDatabase() error {
 	}
 	k.database = gokeepasslib.NewDatabase()
 	k.database.Credentials = gokeepasslib.NewPasswordCredentials(k.promptCredentials())
-	_ = gokeepasslib.NewDecoder(fileHandle).Decode(k.database)
-	_ = k.database.UnlockProtectedEntries()
+	err = gokeepasslib.NewDecoder(fileHandle).Decode(k.database)
+	if err != nil {
+		return err
+	}
+	err = k.database.UnlockProtectedEntries()
+	if err != nil {
+		return err
+	}
 	return nil
 }
