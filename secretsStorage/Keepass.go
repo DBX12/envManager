@@ -1,6 +1,7 @@
 package secretsStorage
 
 import (
+	"envManager/helper"
 	"fmt"
 	"github.com/tobischo/gokeepasslib/v3"
 	"gopkg.in/errgo.v2/fmt/errors"
@@ -39,9 +40,8 @@ func (k Keepass) Validate() (error, []string) {
 }
 
 func (k *Keepass) promptCredentials() string {
-	fmt.Printf("Enter password for %s\n> ", k.Name)
-	var password string
-	_, _ = fmt.Scanln(&password)
+	inputHelper := helper.Input{}
+	password, _ := inputHelper.PromptPassword("Enter password for "+k.Name, '*')
 	return password
 }
 
