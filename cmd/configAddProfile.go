@@ -81,6 +81,9 @@ var configAddProfileCmd = &cobra.Command{
 			var err error
 			profile.Path, err = helper.GetInput().PromptString("Enter the path to the entry")
 			cobra.CheckErr(err)
+		} else {
+			// if we don't need a path, we don't need a storage as well.
+			profile.Storage = ""
 		}
 
 		if flagAddProfileConstEnv {
