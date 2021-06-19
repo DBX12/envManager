@@ -46,7 +46,7 @@ func TestInput_getPresetInputValue(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &Input{
+			i := &input{
 				Inputs: tt.fields.Inputs,
 			}
 			defer func() {
@@ -93,7 +93,7 @@ func TestInput_hasPresetInputValues(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &Input{
+			i := &input{
 				Inputs: tt.fields.Inputs,
 			}
 			if got := i.hasPresetInputValues(); got != tt.want {
