@@ -2,11 +2,11 @@ storages:
   test:
     type: keepass
     config:
-      path: /home/dbx12/GoLandProjects/envManager/data/demo.kdbx
+      path: /home/dbx12/GoLandProjects/envManager/testData/keepass.kdbx
   other:
     type: keepass
     config:
-      path: /home/dbx12/GoLandProjects/envManager/data/demo.kdbx
+      path: /home/dbx12/GoLandProjects/envManager/testData/keepass.kdbx
 profiles:
   root:
     storage: test

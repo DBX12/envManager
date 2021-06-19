@@ -1,0 +1,16 @@
+storages:
+  storage1:
+    type: dummy
+    config:
+      key1: val1
+profiles:
+  profile1:
+    storage: storage1
+    path: profile1
+    constEnv:
+      const1key: const1value
+    env:
+      dyn1key: dyn1value
+    dependsOn:
+    - profile2
+    - profile3

@@ -1,0 +1,21 @@
+storages:
+  keepass01:
+    type: keepass
+    config:
+      path: /tmp/keepass.kdbx
+profiles:
+  root:
+    storage: keepass01
+    path: entry1
+    constEnv:
+      ROOT_PROF: root_entry
+  prof1:
+    storage: keepass01
+    path: group1/g1e1
+    env:
+      PROF1_USER: UserName
+      PROF1_PASS: Password
+    constEnv:
+      PROF1_CONST: foobar
+    dependsOn:
+      - root
