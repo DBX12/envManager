@@ -54,6 +54,20 @@ Yes.
 
 No, circular dependencies are resolved without looping endlessly.
 
+## Extending envManager
+
+The envManager can be easily extended by programming other storage adapters. Each storage adapter must implement the
+`StorageAdapter` interface and define a constant type identifier (like `const KeepassTypeIdentifier = "keepass"`).
+The type identifier is used in the config file to select the storage type. Additionally, the storage provider must be
+registered in `secretsStorage/StorageAdapter.go` in the following methods:
+
+- `CreateStorageAdapter()` This method is a factory for storage adapters. Add your storage adapter as new `case` and
+  assign a new instance of your adapter to the `storage` variable.
+- `GetStorageAdapterTypes()` This method returns all available storage adapter types. Just add your type identifier in
+  the slice.
+- `GetStorageAdapterDefaultConfig()` This method returns the default config of a storage adapter. Add your storage
+  adapter as new `case` and assign a new, empty instance to the `storage` variable.
+
 ## Test data
 
 In the `/testData` directory is a dummy `keepass.kdbx` containing the following entries. The password for this database is `1234`.
