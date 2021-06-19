@@ -40,8 +40,7 @@ func (k Keepass) Validate() (error, []string) {
 }
 
 func (k *Keepass) promptCredentials() string {
-	inputHelper := helper.Input{}
-	password, _ := inputHelper.PromptPassword("Enter password for "+k.Name, '*')
+	password, _ := helper.GetInput().PromptPassword("Enter password for "+k.Name, '*')
 	return password
 }
 
