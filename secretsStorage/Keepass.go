@@ -76,7 +76,7 @@ func (k *Keepass) GetEntry(key string) (*Entry, error) {
 
 func (k Keepass) GetDefaultConfig() map[string]string {
 	return map[string]string{
-		"FilePath": "",
+		"path": "",
 	}
 }
 
