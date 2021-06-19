@@ -3,10 +3,10 @@ package cmd
 import (
 	"envManager/secretsStorage"
 	"github.com/spf13/cobra"
+	"os"
+	"path"
 )
 
-//TODO replace hardcoded dev path with one from home dir
-var debugConfigPath string
 var flagConfigFile string
 
 // rootCmd represents the base command when called without any subcommands
@@ -28,8 +28,9 @@ func Execute() {
 }
 
 func init() {
-	debugConfigPath = "/home/dbx12/GoLandProjects/envManager/data/envManager.yml"
-
+	homeDir, err := os.UserHomeDir()
+	cobra.CheckErr(err)
+	configPath := path.Join(homeDir, ".envManager.yml")
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
@@ -41,7 +42,7 @@ func init() {
 		&flagConfigFile,
 		"config",
 		"c",
-		debugConfigPath,
+		configPath,
 		"Overrides the default config file to use. Defaults to ~/.envManager.yml",
 	)
 	_ = rootCmd.MarkPersistentFlagFilename("config", "yml")
