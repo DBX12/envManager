@@ -37,7 +37,6 @@ func init() {
 	// Cobra also supports local flags, which will only runLoad
 	// when this action is called directly.
 	//rootCmd.Flags().StringArray("load",nil, "List of profiles to load")
-	rootCmd.Flags().Bool("verbose", false, "Enable verbose output")
 	rootCmd.PersistentFlags().StringVarP(
 		&flagConfigFile,
 		"config",
