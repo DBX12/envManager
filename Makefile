@@ -10,7 +10,7 @@ fmt:
 	go fmt ./...
 clean:
 	go clean
-	rm ${COVERAGE_FILE}
+	rm -f ${COVERAGE_FILE}
 deps:
 	go mod tidy
 test:
