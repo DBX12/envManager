@@ -1,7 +1,6 @@
 package secretsStorage
 
 import (
-	"github.com/xorcare/pointer"
 	"reflect"
 	"testing"
 )
@@ -10,6 +9,7 @@ func TestEntry_GetAttribute(t *testing.T) {
 	type args struct {
 		key string
 	}
+	johnDoe := "john.doe"
 	tests := []struct {
 		name              string
 		initialAttributes map[string]string
@@ -24,7 +24,7 @@ func TestEntry_GetAttribute(t *testing.T) {
 				"password": "secret123",
 			},
 			args:    args{key: "username"},
-			want:    pointer.String("john.doe"),
+			want:    &johnDoe,
 			wantErr: false,
 		},
 		{
@@ -44,7 +44,7 @@ func TestEntry_GetAttribute(t *testing.T) {
 				"pass word": "secret123",
 			},
 			args:    args{key: "user name"},
-			want:    pointer.String("john.doe"),
+			want:    &johnDoe,
 			wantErr: false,
 		},
 		{
