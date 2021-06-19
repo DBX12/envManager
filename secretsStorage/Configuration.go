@@ -142,6 +142,7 @@ func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
 	return nil
 }
 
+//SetName is a setter for Profile.name
 func (p *Profile) SetName(name string) {
 	p.name = name
 }
