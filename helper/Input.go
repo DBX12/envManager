@@ -2,12 +2,32 @@ package helper
 
 import (
 	"github.com/manifoldco/promptui"
+	"sync"
 )
 
 //input is an abstraction layer for retrieving user input. It is to be used as
 //singleton via GetInput.
 type input struct {
 	Inputs []string
+}
+
+//inputInstance holds the singleton instance
+var inputInstance *input
+var inputSingletonLock = &sync.Mutex{}
+
+func GetInput() *input {
+	// skip expensive locking if it already exists
+	if inputInstance == nil {
+		// acquire a inputSingletonLock to ensure only one goroutine can make an instance
+		inputSingletonLock.Lock()
+		defer inputSingletonLock.Unlock()
+		// after acquiring the inputSingletonLock, check again if another goroutine got here
+		// first and made an instance
+		if inputInstance == nil {
+			inputInstance = &input{}
+		}
+	}
+	return inputInstance
 }
 
 //hasPresetInputValues checks that the Inputs slice is defined and contains at
