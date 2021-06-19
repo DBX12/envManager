@@ -1,4 +1,5 @@
-BINARY_NAME=envManager
+# WARNING: Changing the BINARY_NAME requires updating the wrapper.sh script as well!
+BINARY_NAME=envManager-bin
 COVERAGE_TYPE=html
 COVERAGE_FILE=coverage.out
 
