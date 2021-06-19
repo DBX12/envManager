@@ -13,6 +13,7 @@ var debugEntryCmd = &cobra.Command{
 	Short: "Shows attributes of an entry",
 	Long:  "The debug entry command shows the attribute names of an entry specified by storage name and path",
 	Args: func(cmd *cobra.Command, args []string) error {
+		initConfig()
 		if len(args) != 2 {
 			return errors.New("Storage and path are required.")
 		}
