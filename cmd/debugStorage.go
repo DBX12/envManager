@@ -40,6 +40,7 @@ a list of all storages is shown.`,
 		_, checks := (*storagePtr).Validate()
 		fmt.Println(strings.Join(checks, "\n"))
 	},
+	ValidArgsFunction: CompleteStorages,
 }
 
 func init() {
