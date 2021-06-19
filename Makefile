@@ -3,8 +3,6 @@ BINARY_NAME=envManager-bin
 COVERAGE_TYPE=html
 COVERAGE_FILE=coverage.out
 
-all: build
-
 build: deps fmt
 	go build -o ${BINARY_NAME}
 fmt:
