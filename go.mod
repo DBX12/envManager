@@ -3,6 +3,7 @@ module envManager
 go 1.16
 
 require (
+	github.com/gopasspw/gopass v1.12.6
 	github.com/josa42/go-prompt v0.0.0-20191128110113-c784ee93a905
 	github.com/manifoldco/promptui v0.8.0
 	github.com/spf13/cobra v1.1.3

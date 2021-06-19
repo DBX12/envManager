@@ -23,8 +23,6 @@ copy&paste the profile and storage configurations.
 
 ## Available storage adapters
 
-Currently, only the `keepass` adapter is supported.
-
 ### Keepass / KeepassX / KeepassXC
 
 This adapter can read keepass2 files (.kdbx). Its config contains one key, `path` which contains an absolute path to the
@@ -39,6 +37,19 @@ storages:
       path: /home/john.doe/myKeepassFile.kdbx
 ```
 
+### Pass
+
+This adapter supports gpg encrypted secrets, as created by the [pass](https://www.passwordstore.org/) or
+[gopass](https://github.com/gopasspw/gopass) password manager. The configuration is an empty map. Password stores
+outside of `~/.password-store` are currently not supported.
+
+**Example**
+```yaml
+storages:
+  myStorageName:
+    type: pass
+    config: {}
+```
 ## FAQ 
 
 ### Can I use multiple storages for one profile?
@@ -77,6 +88,7 @@ In the `/testData` directory is a dummy `keepass.kdbx` containing the following 
 
 ## Used libraries
 
+- [github.com/gopasspw/gopass](https://github.com/gopasspw/gopass)
 - [github.com/josa42/go-prompt](https://github.com/josa42/go-prompt)
 - [github.com/manifoldco/promptui](https://github.com/manifoldco/promptui)
 - [github.com/spf13/cobra](https://github.com/spf13/cobra)

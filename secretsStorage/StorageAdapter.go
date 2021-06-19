@@ -31,6 +31,10 @@ func CreateStorageAdapter(name string, config Storage) (StorageAdapter, error) {
 			Name:     name,
 			FilePath: config.Config["path"],
 		}
+	case PassTypeIdentifier:
+		storage = &Pass{
+			Name: name,
+		}
 	default:
 		return nil, errors.Newf("Unknown storage type %s", config.StorageType)
 	}
@@ -45,6 +49,7 @@ func CreateStorageAdapter(name string, config Storage) (StorageAdapter, error) {
 func GetStorageAdapterTypes() []string {
 	return []string{
 		KeepassTypeIdentifier,
+		PassTypeIdentifier,
 	}
 }
 
@@ -54,6 +59,8 @@ func GetStorageAdapterDefaultConfig(storageType string) (map[string]string, erro
 	switch storageType {
 	case KeepassTypeIdentifier:
 		storage = &Keepass{}
+	case PassTypeIdentifier:
+		storage = &Pass{}
 	default:
 		return nil, errors.Newf("Unknown storage type %s", storageType)
 	}
