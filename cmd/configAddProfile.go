@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"envManager/helper"
 	"envManager/secretsStorage"
 	"fmt"
 	"github.com/josa42/go-prompt/prompt"
@@ -77,8 +78,9 @@ var configAddProfileCmd = &cobra.Command{
 		}
 
 		if needsPath {
-			fmt.Print("Enter the path to the entry: ")
-			_, _ = fmt.Scanf("%s", &(profile.Path))
+			var err error
+			profile.Path, err = helper.GetInput().PromptString("Enter the path to the entry")
+			cobra.CheckErr(err)
 		}
 
 		if flagAddProfileConstEnv {
