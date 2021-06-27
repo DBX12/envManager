@@ -262,3 +262,60 @@ func prepareEnv(clearCurrent bool, newVars map[string]string) error {
 	}
 	return nil
 }
+
+func TestEnvironment_GetCurrent(t *testing.T) {
+	type fields struct {
+		current map[string]string
+		addVars map[string]string
+		delVars map[string]bool
+	}
+	type args struct {
+		key          string
+		defaultValue string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   string
+	}{
+		{
+			name: "Get existing variable",
+			fields: fields{
+				current: map[string]string{"key1": "val1"},
+				addVars: nil,
+				delVars: nil,
+			},
+			args: args{
+				key:          "key1",
+				defaultValue: "defaultValue",
+			},
+			want: "val1",
+		},
+		{
+			name: "Get not-existing variable",
+			fields: fields{
+				current: map[string]string{"key1": "val1"},
+				addVars: nil,
+				delVars: nil,
+			},
+			args: args{
+				key:          "key2",
+				defaultValue: "defaultValue",
+			},
+			want: "defaultValue",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			e := &Environment{
+				current: tt.fields.current,
+				addVars: tt.fields.addVars,
+				delVars: tt.fields.delVars,
+			}
+			if got := e.GetCurrent(tt.args.key, tt.args.defaultValue); got != tt.want {
+				t.Errorf("GetCurrent() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

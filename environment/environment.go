@@ -35,6 +35,16 @@ func (e *Environment) Load() {
 	}
 }
 
+//Retrieves a currently set environment variable by the given key. If it does not
+//exist, the defaultValue is returned.
+func (e *Environment) GetCurrent(key string, defaultValue string) string {
+	value, exists := e.current[key]
+	if !exists {
+		return defaultValue
+	}
+	return value
+}
+
 //Set adds an environment variable with given key and value to the list of variables to set. Call WriteStatements to
 //create export statements consumable by a shell.
 func (e *Environment) Set(key string, value string) error {
