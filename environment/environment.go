@@ -71,7 +71,7 @@ func (e *Environment) WriteStatements() string {
 	for key, value := range e.addVars {
 		output = append(output, fmt.Sprintf("export %s=\"%s\"", key, value))
 	}
-	for key, _ := range e.delVars {
+	for key := range e.delVars {
 		output = append(output, fmt.Sprintf("unset %s", key))
 	}
 	return strings.Join(output, ";")
