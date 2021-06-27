@@ -53,45 +53,6 @@ func getConfigPath() string {
 	return configPath
 }
 
-//promptForEnvVariables shows a prompt for environment variables (the keys) and their values or the mapping (the values)
-func promptForEnvVariables(prompt string, labelKey string, labelValue string) (map[string]string, error) {
-	out := map[string]string{}
-	fmt.Println(prompt)
-
-	keyPrompt := promptui.Prompt{
-		Label: labelKey,
-		Validate: func(input string) error {
-			match, err := regexp.MatchString("^[a-zA-Z0-9_]+$", input)
-			if err != nil {
-				return err
-			}
-			if !match {
-				return errors.New("Only letters, numbers and underscore is allowed")
-			}
-			return nil
-		},
-	}
-	valuePrompt := promptui.Prompt{
-		Label: labelValue,
-	}
-	for {
-		key, keyErr := keyPrompt.Run()
-		if keyErr != nil {
-			return nil, keyErr
-		}
-		value, valueErr := valuePrompt.Run()
-		if valueErr != nil {
-			return nil, valueErr
-		}
-
-		out[key] = value
-		if !promptYesNo("Add another one?") {
-			break
-		}
-	}
-	return out, nil
-}
-
 //promptYesNo shows a prompt for a yes / no question. The (Y|N) is added to the prompt automatically.
 func promptYesNo(prompt string) bool {
 	yesNoPrompt := promptui.Prompt{
