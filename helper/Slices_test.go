@@ -205,3 +205,27 @@ func TestSliceStringRemove(t *testing.T) {
 		})
 	}
 }
+
+func TestSliceStringUnique(t *testing.T) {
+	type args struct {
+		input []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "Normal",
+			args: args{input: []string{"val1", "val2", "val1", "val3"}},
+			want: []string{"val1", "val2", "val3"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := SliceStringUnique(tt.args.input); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("SliceStringUnique() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

@@ -27,3 +27,17 @@ func SliceStringLinearSearch(needle string, haystack []string) int {
 	}
 	return -1
 }
+
+//SliceStringUnique removes all duplicated items in the input slice
+func SliceStringUnique(input []string) []string {
+	temp := make(map[string]bool, len(input))
+	output := make([]string, 0, len(input))
+	for _, value := range input {
+		_, exists := temp[value]
+		if !exists {
+			temp[value] = true
+			output = append(output, value)
+		}
+	}
+	return output
+}
