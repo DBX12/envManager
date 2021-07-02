@@ -5,6 +5,7 @@ import (
 	"envManager/helper"
 	"envManager/secretsStorage"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 // loadCmd represents the load command
@@ -21,6 +22,7 @@ var loadCmd = &cobra.Command{
 func runLoad(_ *cobra.Command, args []string) {
 	registry := secretsStorage.GetRegistry()
 	env := environment.NewEnvironment()
+	env.Load()
 	var profilesToLoad []string
 	for _, name := range args {
 		// get the profile from the registry
@@ -48,6 +50,10 @@ func runLoad(_ *cobra.Command, args []string) {
 		err = profile.AddToEnvironment(&env)
 		cobra.CheckErr(err)
 	}
+	loadedProfiles := strings.Split(env.GetCurrent(envManagerLoadedProfilesName, ""), ",")
+	newEnvManagerLoadedValue := helper.SliceStringUnique(append(loadedProfiles, profilesToLoad...))
+	newEnvManagerLoadedValue = helper.SliceStringRemove("", newEnvManagerLoadedValue)
+	_ = env.Set(envManagerLoadedProfilesName, strings.Join(newEnvManagerLoadedValue, ","))
 	print(env.WriteStatements())
 }
 
