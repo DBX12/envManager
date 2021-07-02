@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"envManager/environment"
 	"envManager/helper"
 	"envManager/secretsStorage"
 	"fmt"
@@ -8,18 +9,31 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"regexp"
+	"strings"
 )
 
 //CompleteProfiles provides completion for a command which expects at least one
 //profile.
-func CompleteProfiles(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+func CompleteProfiles(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	initConfig()
+
+	var possibleValues, excludedValues []string
+	switch cmd.Use {
+	// Special behavior for envManager unload: Suggest loaded profiles
+	case "unload":
+		env := environment.NewEnvironment()
+		env.Load()
+		possibleValues = strings.Split(env.GetCurrent(envManagerLoadedProfilesName, ""), ",")
+		excludedValues = args
+	default:
+		possibleValues = secretsStorage.GetRegistry().GetProfileNames()
+		excludedValues = args
+	}
+
 	// complete profiles
 	completions := helper.Completion(
-		// all profiles of this storage adapter
-		secretsStorage.GetRegistry().GetProfileNames(),
-		// all already specified profiles
-		args,
+		possibleValues,
+		excludedValues,
 		toComplete,
 	)
 	return completions, cobra.ShellCompDirectiveNoFileComp

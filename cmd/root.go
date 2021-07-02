@@ -9,6 +9,9 @@ import (
 
 var flagConfigFile string
 
+// The name of the environment variable containing the loaded profile names
+const envManagerLoadedProfilesName = "ENVMANAGER_LOADED"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "envManager",
