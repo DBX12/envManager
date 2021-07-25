@@ -13,8 +13,9 @@ import (
 func TestConfiguration_LoadFromFile(t *testing.T) {
 	//copyFixtureFile(t, "envManager.yml")
 	type fields struct {
-		Storages map[string]Storage
-		Profiles map[string]Profile
+		Storages         map[string]Storage
+		Profiles         map[string]Profile
+		DirectoryMapping map[string][]string
 	}
 	type args struct {
 		path string
@@ -86,6 +87,9 @@ func TestConfiguration_LoadFromFile(t *testing.T) {
 						DependsOn: []string{"root"},
 					},
 				},
+				DirectoryMapping: map[string][]string{
+					"/tmp/projectA": {"prof1", "root"},
+				},
 			},
 		},
 	}
@@ -114,8 +118,9 @@ func TestConfiguration_LoadFromFile(t *testing.T) {
 
 func TestConfiguration_WriteToFile(t *testing.T) {
 	type fields struct {
-		Storages map[string]Storage
-		Profiles map[string]Profile
+		Storages         map[string]Storage
+		Profiles         map[string]Profile
+		DirectoryMapping map[string][]string
 	}
 	type args struct {
 		path    string
@@ -159,6 +164,9 @@ func TestConfiguration_WriteToFile(t *testing.T) {
 					"profile2", "profile3",
 				},
 			},
+		},
+		DirectoryMapping: map[string][]string{
+			"/tmp/projectA": {"profile1"},
 		},
 	}
 
@@ -207,8 +215,9 @@ func TestConfiguration_WriteToFile(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := Configuration{
-				Storages: tt.fields.Storages,
-				Profiles: tt.fields.Profiles,
+				Storages:         tt.fields.Storages,
+				Profiles:         tt.fields.Profiles,
+				DirectoryMapping: tt.fields.DirectoryMapping,
 			}
 
 			// check that the test setup is correct

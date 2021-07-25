@@ -14,3 +14,6 @@ profiles:
     dependsOn:
     - profile2
     - profile3
+directoryMapping:
+  /tmp/projectA:
+  - profile1

@@ -19,3 +19,7 @@ profiles:
       PROF1_CONST: foobar
     dependsOn:
       - root
+directoryMapping:
+  /tmp/projectA:
+    - prof1
+    - root
