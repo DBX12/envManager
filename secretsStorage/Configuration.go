@@ -8,8 +8,9 @@ import (
 )
 
 type Configuration struct {
-	Storages map[string]Storage `yaml:"storages"`
-	Profiles map[string]Profile `yaml:"profiles"`
+	Storages         map[string]Storage  `yaml:"storages"`
+	Profiles         map[string]Profile  `yaml:"profiles"`
+	DirectoryMapping map[string][]string `yaml:"directoryMapping"`
 }
 
 type Storage struct {
@@ -20,8 +21,9 @@ type Storage struct {
 //NewConfiguration creates a new, empty configuration object
 func NewConfiguration() Configuration {
 	return Configuration{
-		Storages: map[string]Storage{},
-		Profiles: map[string]Profile{},
+		Storages:         map[string]Storage{},
+		Profiles:         map[string]Profile{},
+		DirectoryMapping: map[string][]string{},
 	}
 }
 
