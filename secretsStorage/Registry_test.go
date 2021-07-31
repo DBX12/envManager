@@ -14,16 +14,18 @@ func TestGetRegistry(t *testing.T) {
 
 func TestRegistry_AddProfile(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	type args struct {
 		name    string
 		profile Profile
 	}
 	emptyRegistry := fields{
-		storages: map[string]StorageAdapter{},
-		profiles: map[string]Profile{},
+		storages:         map[string]StorageAdapter{},
+		profiles:         map[string]Profile{},
+		directoryMapping: map[string][]string{},
 	}
 	validProfile := Profile{
 		Storage:   "test01",
@@ -60,8 +62,9 @@ func TestRegistry_AddProfile(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := &Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			err := r.AddProfile(tt.args.name, tt.args.profile)
 			if err != nil {
@@ -83,16 +86,18 @@ func TestRegistry_AddProfile(t *testing.T) {
 
 func TestRegistry_AddStorage(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	type args struct {
 		name    string
 		storage StorageAdapter
 	}
 	emptyRegistry := fields{
-		storages: map[string]StorageAdapter{},
-		profiles: map[string]Profile{},
+		storages:         map[string]StorageAdapter{},
+		profiles:         map[string]Profile{},
+		directoryMapping: map[string][]string{},
 	}
 	tests := []struct {
 		name        string
@@ -146,7 +151,8 @@ func TestRegistry_AddStorage(t *testing.T) {
 						FilePath: "/tmp/initialFile.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "keepass01",
@@ -162,8 +168,9 @@ func TestRegistry_AddStorage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := &Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			if err := r.AddStorage(tt.args.name, tt.args.storage); (err != nil) != tt.wantErr {
 				t.Errorf("AddStorage() error = %v, wantErr %v", err, tt.wantErr)
@@ -279,12 +286,14 @@ func TestRegistry_AddDirectoryMapping(t *testing.T) {
 
 func TestRegistry_GetAllProfiles(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	emptyRegistry := fields{
-		storages: map[string]StorageAdapter{},
-		profiles: map[string]Profile{},
+		storages:         map[string]StorageAdapter{},
+		profiles:         map[string]Profile{},
+		directoryMapping: map[string][]string{},
 	}
 	validProfile := Profile{
 		name:      "profile1",
@@ -311,6 +320,7 @@ func TestRegistry_GetAllProfiles(t *testing.T) {
 				profiles: map[string]Profile{
 					"profile1": validProfile,
 				},
+				directoryMapping: map[string][]string{},
 			},
 			want: map[string]Profile{
 				"profile1": validProfile,
@@ -320,8 +330,9 @@ func TestRegistry_GetAllProfiles(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			if got := r.GetAllProfiles(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetAllProfiles() = %v, want %v", got, tt.want)
@@ -332,8 +343,9 @@ func TestRegistry_GetAllProfiles(t *testing.T) {
 
 func TestRegistry_GetAllStorages(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	dummyStorages := map[string]StorageAdapter{
 		"keepass0": &Keepass{
@@ -353,16 +365,18 @@ func TestRegistry_GetAllStorages(t *testing.T) {
 		{
 			name: "Empty registry",
 			fields: fields{
-				storages: map[string]StorageAdapter{},
-				profiles: map[string]Profile{},
+				storages:         map[string]StorageAdapter{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			want: map[string]StorageAdapter{},
 		},
 		{
 			name: "With dummyStorages",
 			fields: fields{
-				storages: dummyStorages,
-				profiles: map[string]Profile{},
+				storages:         dummyStorages,
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			want: dummyStorages,
 		},
@@ -370,8 +384,9 @@ func TestRegistry_GetAllStorages(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			if got := r.GetAllStorages(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetAllStorages() = %v, want %v", got, tt.want)
@@ -430,8 +445,9 @@ func TestRegistry_GetAllDirectoryMappings(t *testing.T) {
 
 func TestRegistry_GetProfile(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	type args struct {
 		name string
@@ -446,8 +462,9 @@ func TestRegistry_GetProfile(t *testing.T) {
 		{
 			name: "Empty registry",
 			fields: fields{
-				storages: map[string]StorageAdapter{},
-				profiles: map[string]Profile{},
+				storages:         map[string]StorageAdapter{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "awsMain",
@@ -469,6 +486,7 @@ func TestRegistry_GetProfile(t *testing.T) {
 						DependsOn: []string{},
 					},
 				},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "",
@@ -490,6 +508,7 @@ func TestRegistry_GetProfile(t *testing.T) {
 						DependsOn: []string{},
 					},
 				},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "awsMain",
@@ -518,6 +537,7 @@ func TestRegistry_GetProfile(t *testing.T) {
 						DependsOn: []string{},
 					},
 				},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "awsProd",
@@ -529,8 +549,9 @@ func TestRegistry_GetProfile(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			got, err := r.GetProfile(tt.args.name)
 			if (err != nil) != tt.wantErr {
@@ -546,8 +567,9 @@ func TestRegistry_GetProfile(t *testing.T) {
 
 func TestRegistry_GetProfileNames(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	tests := []struct {
 		name   string
@@ -557,8 +579,9 @@ func TestRegistry_GetProfileNames(t *testing.T) {
 		{
 			name: "Empty registry",
 			fields: fields{
-				storages: map[string]StorageAdapter{},
-				profiles: map[string]Profile{},
+				storages:         map[string]StorageAdapter{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			want: nil,
 		},
@@ -584,6 +607,7 @@ func TestRegistry_GetProfileNames(t *testing.T) {
 						DependsOn: []string{},
 					},
 				},
+				directoryMapping: map[string][]string{},
 			},
 			want: []string{"awsMain", "awsProd"},
 		},
@@ -591,8 +615,9 @@ func TestRegistry_GetProfileNames(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			if got := r.GetProfileNames(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetProfileNames() = %v, want %v", got, tt.want)
@@ -603,8 +628,9 @@ func TestRegistry_GetProfileNames(t *testing.T) {
 
 func TestRegistry_GetStorage(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	type args struct {
 		name string
@@ -619,8 +645,9 @@ func TestRegistry_GetStorage(t *testing.T) {
 		{
 			name: "Empty registry",
 			fields: fields{
-				storages: map[string]StorageAdapter{},
-				profiles: map[string]Profile{},
+				storages:         map[string]StorageAdapter{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "keepass0",
@@ -637,7 +664,8 @@ func TestRegistry_GetStorage(t *testing.T) {
 						FilePath: "/tmp/keepass0.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "",
@@ -654,7 +682,8 @@ func TestRegistry_GetStorage(t *testing.T) {
 						FilePath: "/tmp/keepass0.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "keepass0",
@@ -674,7 +703,8 @@ func TestRegistry_GetStorage(t *testing.T) {
 						FilePath: "/tmp/keepass0.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "keepass1",
@@ -686,8 +716,9 @@ func TestRegistry_GetStorage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			got, err := r.GetStorage(tt.args.name)
 			if (err != nil) != tt.wantErr {
@@ -710,8 +741,9 @@ func TestRegistry_GetStorage(t *testing.T) {
 
 func TestRegistry_GetStorageNames(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	tests := []struct {
 		name   string
@@ -721,8 +753,9 @@ func TestRegistry_GetStorageNames(t *testing.T) {
 		{
 			name: "Empty registry",
 			fields: fields{
-				storages: map[string]StorageAdapter{},
-				profiles: map[string]Profile{},
+				storages:         map[string]StorageAdapter{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			want: nil,
 		},
@@ -739,7 +772,8 @@ func TestRegistry_GetStorageNames(t *testing.T) {
 						FilePath: "/tmp/keepass1.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			want: []string{"keepass0", "keepass1"},
 		},
@@ -747,8 +781,9 @@ func TestRegistry_GetStorageNames(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			if got := r.GetStorageNames(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetStorageNames() = %v, want %v", got, tt.want)
@@ -908,8 +943,9 @@ func TestRegistry_GetDirectoryMappedPaths(t *testing.T) {
 
 func TestRegistry_HasProfile(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	type args struct {
 		name string
@@ -923,8 +959,9 @@ func TestRegistry_HasProfile(t *testing.T) {
 		{
 			name: "Empty registry",
 			fields: fields{
-				storages: map[string]StorageAdapter{},
-				profiles: map[string]Profile{},
+				storages:         map[string]StorageAdapter{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "awsMain",
@@ -945,6 +982,7 @@ func TestRegistry_HasProfile(t *testing.T) {
 						DependsOn: []string{},
 					},
 				},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "",
@@ -965,6 +1003,7 @@ func TestRegistry_HasProfile(t *testing.T) {
 						DependsOn: []string{},
 					},
 				},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "awsMain",
@@ -985,6 +1024,7 @@ func TestRegistry_HasProfile(t *testing.T) {
 						DependsOn: []string{},
 					},
 				},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "awsProd",
@@ -995,8 +1035,9 @@ func TestRegistry_HasProfile(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			if got := r.HasProfile(tt.args.name); got != tt.want {
 				t.Errorf("HasProfile() = %v, want %v", got, tt.want)
@@ -1007,8 +1048,9 @@ func TestRegistry_HasProfile(t *testing.T) {
 
 func TestRegistry_HasStorage(t *testing.T) {
 	type fields struct {
-		storages map[string]StorageAdapter
-		profiles map[string]Profile
+		storages         map[string]StorageAdapter
+		profiles         map[string]Profile
+		directoryMapping map[string][]string
 	}
 	type args struct {
 		name string
@@ -1022,8 +1064,9 @@ func TestRegistry_HasStorage(t *testing.T) {
 		{
 			name: "Empty registry",
 			fields: fields{
-				storages: map[string]StorageAdapter{},
-				profiles: map[string]Profile{},
+				storages:         map[string]StorageAdapter{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "keepass0",
@@ -1039,7 +1082,8 @@ func TestRegistry_HasStorage(t *testing.T) {
 						FilePath: "/tmp/keepass0.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "",
@@ -1055,7 +1099,8 @@ func TestRegistry_HasStorage(t *testing.T) {
 						FilePath: "/tmp/keepass0.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "keepass1",
@@ -1071,7 +1116,8 @@ func TestRegistry_HasStorage(t *testing.T) {
 						FilePath: "/tmp/keepass0.kdbx",
 					},
 				},
-				profiles: map[string]Profile{},
+				profiles:         map[string]Profile{},
+				directoryMapping: map[string][]string{},
 			},
 			args: args{
 				name: "keepass0",
@@ -1082,8 +1128,9 @@ func TestRegistry_HasStorage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Registry{
-				storages: tt.fields.storages,
-				profiles: tt.fields.profiles,
+				storages:         tt.fields.storages,
+				profiles:         tt.fields.profiles,
+				directoryMapping: tt.fields.directoryMapping,
 			}
 			if got := r.HasStorage(tt.args.name); got != tt.want {
 				t.Errorf("HasStorage() = %v, want %v", got, tt.want)
