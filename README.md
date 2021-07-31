@@ -6,6 +6,8 @@ The envManager knows **profiles** and **storages**. A **storage** is a secure lo
 keepass). A **profile** is a set of environment variables which should be set / unset together. The environment variables
 can either have a constant value or get their value from a storage. A profile can depend on other profiles, which means
 that loading the first profile will load all dependencies as well. Even circular dependencies are allowed.
+**Directory mappings** are supported since version 1.1. With directory mappings, envManager will remember which profiles
+are used in which directory. You can either remember the currently loaded profiles or select from all configured profiles.
 
 ## Setup
 
@@ -20,6 +22,9 @@ home directory.
 You can now add storages and profiles by hand or let the application do it for you. Run `envManager config add storage`
 to add your first storage and `envManager config add profile` to add your first profile. After that, you can easily
 copy&paste the profile and storage configurations.
+To add a directory mapping, navigate to the directory you want to map and either load the profiles you will need here and
+call `envManager config add mapping`. Or navigate to the directory and call `envManager config add mapping --select` to
+get a list of all your profiles and check the ones you want to map to this directory.
 
 ## Available storage adapters
 
