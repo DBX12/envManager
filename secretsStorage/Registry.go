@@ -6,8 +6,9 @@ import (
 )
 
 type Registry struct {
-	storages map[string]StorageAdapter
-	profiles map[string]Profile
+	storages         map[string]StorageAdapter
+	profiles         map[string]Profile
+	directoryMapping map[string][]string
 }
 
 var instance *Registry
@@ -30,8 +31,9 @@ func GetRegistry() *Registry {
 
 func newRegistry() *Registry {
 	return &Registry{
-		storages: map[string]StorageAdapter{},
-		profiles: map[string]Profile{},
+		storages:         map[string]StorageAdapter{},
+		profiles:         map[string]Profile{},
+		directoryMapping: map[string][]string{},
 	}
 }
 
@@ -56,6 +58,20 @@ func (r *Registry) AddProfile(name string, profile Profile) error {
 	}
 	profile.SetName(name)
 	r.profiles[name] = profile
+	return nil
+}
+
+//AddDirectoryMapping adds a directory mapping to the registry. If the given path
+//already exists, the mapping will be replaced. Will return an error if the path
+//or profiles are empty
+func (r Registry) AddDirectoryMapping(path string, profiles []string) error {
+	if path == "" {
+		return errors.New("path cannot be empty")
+	}
+	if len(profiles) == 0 {
+		return errors.New("profiles cannot be empty")
+	}
+	r.directoryMapping[path] = profiles
 	return nil
 }
 
@@ -85,6 +101,19 @@ func (r Registry) GetStorage(name string) (*StorageAdapter, error) {
 	return &storage, nil
 }
 
+//GetDirectoryMapping retrieves the profile names mapped to the given path.
+//Will return an error if given path is empty or unknown to the registry
+func (r Registry) GetDirectoryMapping(path string) ([]string, error) {
+	if path == "" {
+		return nil, errors.New("path cannot be empty")
+	}
+	profiles, exists := r.directoryMapping[path]
+	if !exists {
+		return nil, errors.Newf("directory mapping for path %s does not exist", path)
+	}
+	return profiles, nil
+}
+
 //HasStorage checks if the registry knows about a storage with this name
 func (r Registry) HasStorage(name string) bool {
 	_, exists := r.storages[name]
@@ -97,6 +126,12 @@ func (r Registry) HasProfile(name string) bool {
 	return exists
 }
 
+//HasDirectoryMapping checks if the registry knows about a directory mapping for this path
+func (r Registry) HasDirectoryMapping(path string) bool {
+	_, exists := r.directoryMapping[path]
+	return exists
+}
+
 //GetAllStorages returns all storages known to the registry
 func (r Registry) GetAllStorages() map[string]StorageAdapter {
 	return r.storages
@@ -105,6 +140,11 @@ func (r Registry) GetAllStorages() map[string]StorageAdapter {
 //GetAllProfiles returns all profiles known to the registry
 func (r Registry) GetAllProfiles() map[string]Profile {
 	return r.profiles
+}
+
+//GetAllDirectoryMappings returns all directory mappings known to the registry
+func (r Registry) GetAllDirectoryMappings() map[string][]string {
+	return r.directoryMapping
 }
 
 //GetStorageNames returns the names of all storages known to the registry
@@ -120,6 +160,15 @@ func (r Registry) GetStorageNames() []string {
 func (r Registry) GetProfileNames() []string {
 	var out []string
 	for name := range r.profiles {
+		out = append(out, name)
+	}
+	return out
+}
+
+//GetDirectoryMappedPaths returns all paths which have a mapping in the registry
+func (r Registry) GetDirectoryMappedPaths() []string {
+	var out []string
+	for name := range r.directoryMapping {
 		out = append(out, name)
 	}
 	return out
