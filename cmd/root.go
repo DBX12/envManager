@@ -69,4 +69,9 @@ func initConfig() {
 		err := registry.AddProfile(name, profile)
 		cobra.CheckErr(err)
 	}
+
+	for mappingPath, profiles := range config.DirectoryMapping {
+		err := registry.AddDirectoryMapping(mappingPath, profiles)
+		cobra.CheckErr(err)
+	}
 }
