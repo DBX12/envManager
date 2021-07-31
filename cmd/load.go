@@ -5,16 +5,17 @@ import (
 	"envManager/helper"
 	"envManager/secretsStorage"
 	"github.com/spf13/cobra"
+	"os"
 	"strings"
 )
 
 // loadCmd represents the load command
 var loadCmd = &cobra.Command{
-	Use:               "load",
-	Short:             "Load profiles",
-	Long:              `Load one or more profiles to this shell's environment`,
+	Use:   "load",
+	Short: "Load profiles",
+	Long: `Load one or more profiles to this shell's environment.
+If called without profiles, the directory mapping for the current working directory will be loaded.`,
 	Run:               runLoad,
-	Args:              cobra.MinimumNArgs(1),
 	ValidArgsFunction: CompleteProfiles,
 	PreRun:            InitConfig,
 }
@@ -24,6 +25,18 @@ func runLoad(_ *cobra.Command, args []string) {
 	env := environment.NewEnvironment()
 	env.Load()
 	var profilesToLoad []string
+
+	if len(args) == 0 {
+		workingDir, err := os.Getwd()
+		cobra.CheckErr(err)
+		if registry.HasDirectoryMapping(workingDir) {
+			profilesToLoad, err = registry.GetDirectoryMapping(workingDir)
+			cobra.CheckErr(err)
+		} else {
+			cobra.CheckErr("No profiles specified and no mapping for this path found")
+		}
+	}
+
 	for _, name := range args {
 		// get the profile from the registry
 		profile, err := registry.GetProfile(name)
