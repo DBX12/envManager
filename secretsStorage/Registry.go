@@ -12,20 +12,12 @@ type Registry struct {
 }
 
 var instance *Registry
-var lock = &sync.Mutex{}
+var once sync.Once
 
 func GetRegistry() *Registry {
-	// skip expensive locking if it already exists
-	if instance == nil {
-		// acquire a lock to ensure only one goroutine can make an instance
-		lock.Lock()
-		defer lock.Unlock()
-		// after acquiring the lock, check again if another goroutine got here
-		// first and made an instance
-		if instance == nil {
-			instance = newRegistry()
-		}
-	}
+	once.Do(func() {
+		instance = newRegistry()
+	})
 	return instance
 }
 
