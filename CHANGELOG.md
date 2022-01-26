@@ -10,6 +10,7 @@ covered in the changelog.
 ## [Unreleased]
 ### Added
 - This changelog
+- [pass] Configuration option "prefix"
 
 ## [1.1.0] - 2021-07-31
 ### Added

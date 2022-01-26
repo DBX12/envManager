@@ -45,16 +45,42 @@ storages:
 ### Pass
 
 This adapter supports gpg encrypted secrets, as created by the [pass](https://www.passwordstore.org/) or
-[gopass](https://github.com/gopasspw/gopass) password manager. The configuration is an empty map. Password stores
-outside of `~/.password-store` are currently not supported.
+[gopass](https://github.com/gopasspw/gopass) password manager. Password stores outside of `~/.password-store` are
+currently not supported. The `prefix` config option specifies a directory inside the `~/.password-store` directory, if
+the value is not specified (like in a config from version 1.1.0 and earlier) or set to an empty string, the path of an
+entry is used as absolute within the password store.
 
 **Example**
 ```yaml
 storages:
   myStorageName:
     type: pass
-    config: {}
+    config:
+      prefix: "prefix"
 ```
+
+#### Using the prefix
+
+Assume you have the entry `~/.password-store/shared/admin-account` in your pass storage. You can now configure your
+storage adapter and a profile like this:
+```yaml
+storages:
+  old:
+    type: pass
+    config: {}
+  shared:
+    type: pass
+    config:
+      prefix: "shared"
+profiles:
+  adminAcc:
+    storage: shared
+    path: admin-account
+    # The keys constEnv, env and dependsOn are not relevant for this example and are omitted
+```
+Note how the path is no longer `shared/admin-account` but only `admin-account`. When you ask envManager to load the
+profile `adminAcc`, it will automatically prefix the path with the `prefix` value of the storage adapter.
+
 ## FAQ 
 
 ### Can I use multiple storages for one profile?

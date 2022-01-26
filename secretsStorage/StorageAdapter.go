@@ -33,7 +33,8 @@ func CreateStorageAdapter(name string, config Storage) (StorageAdapter, error) {
 		}
 	case PassTypeIdentifier:
 		storage = &Pass{
-			Name: name,
+			Name:   name,
+			Prefix: config.Config["prefix"],
 		}
 	default:
 		return nil, errors.Newf("Unknown storage type %s", config.StorageType)

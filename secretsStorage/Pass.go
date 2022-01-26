@@ -9,13 +9,18 @@ import (
 const PassTypeIdentifier = "pass"
 
 type Pass struct {
-	Name  string
-	store *api.Gopass
+	Name   string
+	Prefix string
+	store  *api.Gopass
 }
 
 func (p *Pass) GetEntry(key string) (*Entry, error) {
 	if err := p.initStore(); err != nil {
 		return nil, err
+	}
+	if p.Prefix != "" {
+		// only add non-empty prefix, otherwise the key starts with /
+		key = p.Prefix + "/" + key
 	}
 	secret, err := p.store.Get(context.Background(), key, "")
 	if err != nil {
@@ -55,5 +60,7 @@ func (p *Pass) Validate() (error, []string) {
 }
 
 func (p *Pass) GetDefaultConfig() map[string]string {
-	return map[string]string{}
+	return map[string]string{
+		"prefix": "",
+	}
 }
