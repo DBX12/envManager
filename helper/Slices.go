@@ -18,7 +18,7 @@ func SliceStringRemove(value string, slice []string) []string {
 }
 
 //SliceStringLinearSearch finds the first occurrence of the given needle in the
-//haystack.
+//haystack. Returns -1 if the needle was not found.
 func SliceStringLinearSearch(needle string, haystack []string) int {
 	for i := 0; i < len(haystack); i++ {
 		if haystack[i] == needle {
@@ -40,4 +40,21 @@ func SliceStringUnique(input []string) []string {
 		}
 	}
 	return output
+}
+
+//SliceStringEqual checks if the slices contain the same string values without
+//considering the order of the items. This means [foo bar] is equal to
+//[bar foo] but not equal to [foo baz].
+func SliceStringEqual(a []string, b []string) bool {
+	lenA := len(a)
+	if lenA != len(b) {
+		return false
+	}
+	for i := 0; i < lenA; i++ {
+		if SliceStringLinearSearch(a[i], b) == -1 {
+			// entry a[i] is missing from b, the slices are not equal
+			return false
+		}
+	}
+	return true
 }
