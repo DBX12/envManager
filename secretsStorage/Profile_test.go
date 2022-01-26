@@ -24,7 +24,7 @@ func TestProfile_AddToEnvironment(t *testing.T) {
 	// setup of dummy storage
 	const storageName = "keepass"
 	_ = GetRegistry().AddStorage(storageName, &Keepass{
-		FilePath: helper.GetTestDataFile(t, "keepass.kdbx"),
+		FilePath: internal.GetTestDataFile(t, "keepass.kdbx"),
 	})
 
 	// setup of dummy environments
@@ -211,7 +211,7 @@ func TestProfile_GetDependencies(t *testing.T) {
 	// setup of dummy registry
 	const storageName = "keepass"
 	_ = GetRegistry().AddStorage(storageName, &Keepass{
-		FilePath: helper.GetTestDataFile(t, "keepass.kdbx"),
+		FilePath: internal.GetTestDataFile(t, "keepass.kdbx"),
 	})
 	_ = GetRegistry().AddProfile("dependency1", getEmptyProfile(t))
 	_ = GetRegistry().AddProfile("dependency2", Profile{
@@ -391,7 +391,7 @@ func TestProfile_RemoveFromEnvironment(t *testing.T) {
 	// setup of dummy storage
 	const storageName = "keepass"
 	_ = GetRegistry().AddStorage(storageName, &Keepass{
-		FilePath: helper.GetTestDataFile(t, "keepass.kdbx"),
+		FilePath: internal.GetTestDataFile(t, "keepass.kdbx"),
 	})
 
 	// setup of dummy environments
@@ -545,7 +545,7 @@ func TestProfile_Validate(t *testing.T) {
 	// setup of dummy storage
 	const storageName = "keepass"
 	_ = GetRegistry().AddStorage(storageName, &Keepass{
-		FilePath: helper.GetTestDataFile(t, "keepass.kdbx"),
+		FilePath: internal.GetTestDataFile(t, "keepass.kdbx"),
 	})
 	_ = GetRegistry().AddProfile("dependency1", getEmptyProfile(t))
 

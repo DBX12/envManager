@@ -2,7 +2,7 @@ package secretsStorage
 
 import (
 	"bytes"
-	"envManager/helper"
+	"envManager/internal"
 	"io/ioutil"
 	"os"
 	"path"
@@ -33,7 +33,7 @@ func TestConfiguration_LoadFromFile(t *testing.T) {
 				Storages: map[string]Storage{},
 				Profiles: map[string]Profile{},
 			},
-			args:    args{path: helper.GetTestDataFile(t, "not-existing.yml")},
+			args:    args{path: internal.GetTestDataFile(t, "not-existing.yml")},
 			wantErr: true,
 			want:    nil,
 		},
@@ -43,7 +43,7 @@ func TestConfiguration_LoadFromFile(t *testing.T) {
 				Storages: map[string]Storage{},
 				Profiles: map[string]Profile{},
 			},
-			args:    args{path: helper.GetTestDataFile(t, "invalid.yml")},
+			args:    args{path: internal.GetTestDataFile(t, "invalid.yml")},
 			wantErr: true,
 			want:    nil,
 		},
@@ -53,7 +53,7 @@ func TestConfiguration_LoadFromFile(t *testing.T) {
 				Storages: map[string]Storage{},
 				Profiles: map[string]Profile{},
 			},
-			args:    args{path: helper.GetTestDataFile(t, "envManager.yml")},
+			args:    args{path: internal.GetTestDataFile(t, "envManager.yml")},
 			wantErr: false,
 			want: &fields{
 				Storages: map[string]Storage{
@@ -187,7 +187,7 @@ func TestConfiguration_WriteToFile(t *testing.T) {
 			},
 			fileShouldExist: false,
 			wantErr:         false,
-			wantedFile:      helper.GetTestDataFile(t, "expectedConfigFile1.yaml"),
+			wantedFile:      internal.GetTestDataFile(t, "expectedConfigFile1.yaml"),
 		},
 		{
 			name:   "File exists",
@@ -209,7 +209,7 @@ func TestConfiguration_WriteToFile(t *testing.T) {
 			},
 			fileShouldExist: true,
 			wantErr:         false,
-			wantedFile:      helper.GetTestDataFile(t, "expectedConfigFile1.yaml"),
+			wantedFile:      internal.GetTestDataFile(t, "expectedConfigFile1.yaml"),
 		},
 	}
 	for _, tt := range tests {
