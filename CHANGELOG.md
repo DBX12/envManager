@@ -8,6 +8,9 @@ The entries for 1.0.0 and 1.1.0 are reconstructed from the git history, so there
 covered in the changelog.
 
 ## [Unreleased]
+
+
+## [1.2.0] - 2022-01-26
 ### Added
 - This changelog
 - [pass] Configuration option "prefix"
@@ -20,6 +23,7 @@ covered in the changelog.
 Initial version
 
 
-[Unreleased]: https://github.com/DBX12/envManager/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/DBX12/envManager/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/DBX12/envManager/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/DBX12/envManager/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/DBX12/envManager/releases/tag/v1.0.0
