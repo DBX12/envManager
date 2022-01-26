@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"reflect"
+	"envManager/internal"
 	"testing"
 )
 
@@ -199,7 +199,7 @@ func TestSliceStringRemove(t *testing.T) {
 				// we got an empty slice and wanted an empty slice, all is good
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("SliceStringRemove() = %v, want %v", got, tt.want)
 			}
 		})
@@ -223,7 +223,8 @@ func TestSliceStringUnique(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := SliceStringUnique(tt.args.input); !reflect.DeepEqual(got, tt.want) {
+			got := SliceStringUnique(tt.args.input)
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("SliceStringUnique() = %v, want %v", got, tt.want)
 			}
 		})

@@ -1,6 +1,7 @@
 package secretsStorage
 
 import (
+	"envManager/internal"
 	"reflect"
 	"testing"
 )
@@ -192,7 +193,7 @@ func TestEntry_GetAttributeNames(t *testing.T) {
 				attributes: tt.fields.attributes,
 			}
 			got := e.GetAttributeNames()
-			if !reflect.DeepEqual(got, tt.want) {
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("GetAttributeNames() = %v, want %v", got, tt.want)
 			}
 		})

@@ -3,6 +3,7 @@ package secretsStorage
 import (
 	"envManager/environment"
 	"envManager/helper"
+	"envManager/internal"
 	"reflect"
 	"testing"
 )
@@ -367,7 +368,7 @@ func TestProfile_GetDependencies(t *testing.T) {
 				t.Errorf("GetDependencies() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("GetDependencies() got = %v, want %v", got, tt.want)
 			}
 		})

@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"reflect"
+	"envManager/internal"
 	"testing"
 )
 
@@ -60,7 +60,7 @@ func TestInput_getPresetInputValue(t *testing.T) {
 			if got := i.getPresetInputValue(); got != tt.want {
 				t.Fatalf("getPresetInputValue() = %v, want %v", got, tt.want)
 			}
-			if !reflect.DeepEqual(tt.wantInputs, i.Inputs) {
+			if !internal.AssertStringSliceEqual(t, tt.wantInputs, i.Inputs) {
 				t.Errorf("Inputs = %v, want %v", i.Inputs, tt.wantInputs)
 			}
 		})

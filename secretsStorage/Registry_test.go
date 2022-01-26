@@ -1,6 +1,7 @@
 package secretsStorage
 
 import (
+	"envManager/internal"
 	"reflect"
 	"testing"
 )
@@ -785,7 +786,8 @@ func TestRegistry_GetStorageNames(t *testing.T) {
 				profiles:         tt.fields.profiles,
 				directoryMapping: tt.fields.directoryMapping,
 			}
-			if got := r.GetStorageNames(); !reflect.DeepEqual(got, tt.want) {
+			got := r.GetStorageNames()
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("GetStorageNames() = %v, want %v", got, tt.want)
 			}
 		})

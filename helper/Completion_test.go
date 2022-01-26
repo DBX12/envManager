@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"reflect"
+	"envManager/internal"
 	"testing"
 )
 
@@ -65,7 +65,8 @@ func TestCompletion(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Completion(tt.args.possibleValues, tt.args.excludedValues, tt.args.withPrefix); !reflect.DeepEqual(got, tt.want) {
+			got := Completion(tt.args.possibleValues, tt.args.excludedValues, tt.args.withPrefix)
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("Completion() = %v, want %v", got, tt.want)
 			}
 		})
