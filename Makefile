@@ -20,9 +20,9 @@ ifndef VERSION
 endif
 	scripts/updateChangelog.sh $(VERSION)
 	git add CHANGELOG.md
-	git commit --sign --message "Release $(VERSION)\nSee CHANGELOG.md for details"
+	git commit --sign --message "Release $(VERSION)" --message "See CHANGELOG.md for details"
 	git tag --annotate --sign --message "v$(VERSION)" "v$(VERSION)"
-	git push origin --tags
+	git push origin master --tags
 	@echo "You should do a github release now."
 	@echo "https://github.com/DBX12/envManager/releases/new"
 fmt:
