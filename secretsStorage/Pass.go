@@ -2,6 +2,7 @@ package secretsStorage
 
 import (
 	"context"
+	"github.com/gopasspw/gopass/pkg/gopass"
 	"github.com/gopasspw/gopass/pkg/gopass/api"
 	"gopkg.in/errgo.v2/fmt/errors"
 )
@@ -11,7 +12,7 @@ const PassTypeIdentifier = "pass"
 type Pass struct {
 	Name   string
 	Prefix string
-	store  *api.Gopass
+	store  gopass.Store
 }
 
 func (p *Pass) GetEntry(key string) (*Entry, error) {
