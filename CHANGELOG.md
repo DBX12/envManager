@@ -8,7 +8,8 @@ The entries for 1.0.0 and 1.1.0 are reconstructed from the git history, so there
 covered in the changelog.
 
 ## [Unreleased]
-
+### Added
+- `current` command to show currently loaded profiles
 
 ## [1.2.0] - 2022-01-26
 ### Added
