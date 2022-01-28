@@ -615,7 +615,8 @@ func TestProfile_Validate(t *testing.T) {
 				Env:       tt.fields.Env,
 				DependsOn: tt.fields.DependsOn,
 			}
-			if got := p.Validate(); !reflect.DeepEqual(got, tt.want) {
+			got := p.Validate()
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("Validate() = %v, want %v", got, tt.want)
 			}
 		})

@@ -275,7 +275,7 @@ func TestRegistry_AddDirectoryMapping(t *testing.T) {
 					t.Error("The directory mapping exists in the registry while it should not")
 				}
 				actualMapping, _ := r.GetDirectoryMapping(tt.args.path)
-				if !reflect.DeepEqual(actualMapping, tt.args.profiles) {
+				if !internal.AssertStringSliceEqual(t, tt.args.profiles, actualMapping) {
 					t.Errorf("Directory mapping in registry = %v, want %v", actualMapping, tt.args.profiles)
 				}
 			} else if tt.wantMapping {
@@ -620,7 +620,8 @@ func TestRegistry_GetProfileNames(t *testing.T) {
 				profiles:         tt.fields.profiles,
 				directoryMapping: tt.fields.directoryMapping,
 			}
-			if got := r.GetProfileNames(); !reflect.DeepEqual(got, tt.want) {
+			got := r.GetProfileNames()
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("GetProfileNames() = %v, want %v", got, tt.want)
 			}
 		})
@@ -887,7 +888,7 @@ func TestRegistry_GetDirectoryMapping(t *testing.T) {
 				}
 			} else {
 				// only dereference got if it is not nil
-				if !reflect.DeepEqual(got, tt.want) {
+				if !internal.AssertStringSliceEqual(t, tt.want, got) {
 					t.Errorf("GetDirectoryMapping() got = %v, want %v", got, tt.want)
 				}
 			}
@@ -936,7 +937,8 @@ func TestRegistry_GetDirectoryMappedPaths(t *testing.T) {
 				profiles:         tt.fields.profiles,
 				directoryMapping: tt.fields.directoryMapping,
 			}
-			if got := r.GetDirectoryMappedPaths(); !reflect.DeepEqual(got, tt.want) {
+			got := r.GetDirectoryMappedPaths()
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
 				t.Errorf("GetDirectoryMappedPaths() = %v, want %v", got, tt.want)
 			}
 		})
