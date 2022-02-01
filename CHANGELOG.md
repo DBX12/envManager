@@ -11,6 +11,7 @@ covered in the changelog.
 ### Added
 - `current` command to show currently loaded profiles
 - `--version` flag to display the version of envManager
+- `unload --all` to unload all currently loaded profiles of this shell
 
 ## [1.2.0] - 2022-01-26
 ### Added
