@@ -6,11 +6,11 @@ COVERAGE_FILE=coverage.out
 VERSION=
 
 build: deps fmt
-	go build -o ${BINARY_NAME}
+	go build -o ${BINARY_NAME} -ldflags "-X envManager/cmd.version=dev"
 build-release: deps fmt
 	# -s : no symbol table
 	# -w : no DWARF symbol table
-	go build -o ${BINARY_NAME} -ldflags "-s -w"
+	go build -o ${BINARY_NAME} -ldflags "-s -w -X envManager/cmd.version=$(VERSION)"
 
 release: build-release
 ifndef VERSION

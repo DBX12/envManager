@@ -12,16 +12,14 @@ var flagConfigFile string
 // The name of the environment variable containing the loaded profile names
 const envManagerLoadedProfilesName = "ENVMANAGER_LOADED"
 
+var version = "unknown"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "envManager",
-	Short: "Manage your environment variables",
-	Long:  `A program to manage the environment variables of your shell, pulling the secrets from a secure secretsStorage like keepass.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//Run: func(cmd *cobra.Command, args []string) {
-	//	fmt.Printf("%#v",args)
-	//},
+	Use:     "envManager",
+	Short:   "Manage your environment variables",
+	Long:    `A program to manage the environment variables of your shell, pulling the secrets from a secure secretsStorage like keepass.`,
+	Version: version,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
