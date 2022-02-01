@@ -24,19 +24,19 @@ func runLoad(_ *cobra.Command, args []string) {
 	registry := secretsStorage.GetRegistry()
 	env := environment.NewEnvironment()
 	env.Load()
-	var profilesToLoad []string
 
 	if len(args) == 0 {
 		workingDir, err := os.Getwd()
 		cobra.CheckErr(err)
 		if registry.HasDirectoryMapping(workingDir) {
-			profilesToLoad, err = registry.GetDirectoryMapping(workingDir)
+			args, err = registry.GetDirectoryMapping(workingDir)
 			cobra.CheckErr(err)
 		} else {
 			cobra.CheckErr("No profiles specified and no mapping for this path found")
 		}
 	}
 
+	var profilesToLoad []string
 	for _, name := range args {
 		// get the profile from the registry
 		profile, err := registry.GetProfile(name)

@@ -8,7 +8,8 @@ The entries for 1.0.0 and 1.1.0 are reconstructed from the git history, so there
 covered in the changelog.
 
 ## [Unreleased]
-
+### Changed
+- Directory mappings now load dependencies
 
 ## [1.3.0] - 2022-02-01
 ### Added
