@@ -4,6 +4,8 @@ COVERAGE_TYPE=html
 COVERAGE_FILE=coverage.out
 # This variable should not be set to a fixed value but be provided when calling the build-release target
 VERSION=
+# user id to use for signing commits, defaults to the email of the git committer
+SIGN_USER_ID=$(shell git config user.email)
 
 build: deps fmt
 	go build -o ${BINARY_NAME} -ldflags "-X envManager/cmd.version=dev"
@@ -18,10 +20,12 @@ ifndef VERSION
 	@echo "make release VERSION=x.y.z"
 	@exit 1
 endif
+	@echo "Checking if the gpg key is present and unlocked (or you got the password ready). You can safely Ctrl+C now if you need to."
+	@echo "test" | gpg --output /dev/null --user $(SIGN_USER_ID) --sign -
 	scripts/updateChangelog.sh $(VERSION)
 	git add CHANGELOG.md
-	git commit --sign --message "Release $(VERSION)" --message "See CHANGELOG.md for details"
-	git tag --annotate --sign --message "v$(VERSION)" "v$(VERSION)"
+	git commit --gpg-sign=$(SIGN_USER_ID) --message "Release $(VERSION)" --message "See CHANGELOG.md for details"
+	git tag --annotate --sign --local-user=$(SIGN_USER_ID) --message "v$(VERSION)" "v$(VERSION)"
 	git push origin master --tags
 	@echo "You should do a github release now."
 	@echo "https://github.com/DBX12/envManager/releases/new"
