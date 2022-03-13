@@ -8,6 +8,8 @@ The entries for 1.0.0 and 1.1.0 are reconstructed from the git history, so there
 covered in the changelog.
 
 ## [Unreleased]
+### Added
+- `unload -a` as shorthand for `unload --all`
 ### Changed
 - Directory mappings now load dependencies
 

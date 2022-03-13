@@ -46,5 +46,5 @@ func runUnload(cmd *cobra.Command, args []string) {
 
 func init() {
 	rootCmd.AddCommand(unloadCmd)
-	unloadCmd.Flags().Bool("all", false, "Select all currently loaded profiles for unloading")
+	unloadCmd.Flags().BoolP("all", "a", false, "Select all currently loaded profiles for unloading")
 }
