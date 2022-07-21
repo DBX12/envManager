@@ -1,23 +1,38 @@
 #!/usr/bin/env bash
 
-
 function envManager() {
+  local verb TMPFILE exitCode tmpValue
   # get the first parameter (= verb like load, unload or debug)
-  local verb=$1
+  verb=$1
   # get a temporary file where the stderr will be stored. The file has mode 600 by default.
-  local TMPFILE=$(mktemp -t "XXXXXXXXXXXXXX")
+  TMPFILE=$(mktemp -t "XXXXXXXXXXXXXX")
   # call the binary and redirect its stderr into TMPFILE. If the binary is not in your PATH, put an absolute path here.
   envManager-bin "$@" 2> "$TMPFILE"
   # collect the exit code of the envManager-bin call
-  local exitCode=$?
+  exitCode=$?
   # read and destroy the TMPFILE
-  local tmpValue=$(cat "$TMPFILE"; rm -f "$TMPFILE")
+  tmpValue=$(cat "$TMPFILE"; rm -f "$TMPFILE")
 
-  if ([[ $verb == "load" ]] || [[ $verb == "unload" ]]) && [[ $exitCode -eq 0 ]]; then
-    # the output of these verbs should be eval'ed if the exitCode was zero
-    eval "$tmpValue"
-  elif [[ $verb != "__complete" ]]; then
-    # for all other cases, just show what the binary returned in stderr
-    echo "$tmpValue"
+  # write the error message to stderr if the binary returned a non-zero exit code
+  if [[ $exitCode -ne 0 ]]; then
+    echo "$tmpValue" 1>&2
+    return $exitCode
   fi
+
+  case "$verb" in
+    # the output of these verbs should be eval'ed
+    load|unload)
+      eval "$tmpValue"
+      return $exitCode
+      ;;
+    # the stderr output of the __complete verbs is to be discarded
+    __complete*)
+      return $exitCode
+      ;;
+    # for all other cases, just show what the binary returned in stderr
+    *)
+      echo "$tmpValue" 1>&2
+      return $exitCode
+      ;;
+  esac
 }
