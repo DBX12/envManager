@@ -8,6 +8,7 @@ import (
 )
 
 type Configuration struct {
+	Options          Options             `yaml:"options,omitempty"`
 	Storages         map[string]Storage  `yaml:"storages"`
 	Profiles         map[string]Profile  `yaml:"profiles"`
 	DirectoryMapping map[string][]string `yaml:"directoryMapping"`
@@ -18,9 +19,17 @@ type Storage struct {
 	Config      map[string]string `yaml:"config"`
 }
 
+//Options controls the general behavior of envManager. It is only read from the config file in the home directory and
+//cannot be overridden by other config files.
+type Options struct {
+	//DisableCollisionDetection allows overwriting profiles, storages and mappings instead of returning an error
+	DisableCollisionDetection bool `yaml:"disableCollisionDetection"`
+}
+
 //NewConfiguration creates a new, empty configuration object
 func NewConfiguration() Configuration {
 	return Configuration{
+		Options:          Options{},
 		Storages:         map[string]Storage{},
 		Profiles:         map[string]Profile{},
 		DirectoryMapping: map[string][]string{},
