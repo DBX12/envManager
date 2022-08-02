@@ -290,3 +290,51 @@ func TestSliceStringEqual(t *testing.T) {
 		})
 	}
 }
+
+func TestSliceStringReverse(t *testing.T) {
+	type args struct {
+		input []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "Empty slice",
+			args: args{
+				input: []string{},
+			},
+			want: []string{},
+		},
+		{
+			name: "Nil",
+			args: args{
+				input: nil,
+			},
+			want: []string{},
+		},
+		{
+			name: "Single item",
+			args: args{
+				input: []string{"elementA"},
+			},
+			want: []string{"elementA"},
+		},
+		{
+			name: "Multiple elements",
+			args: args{
+				input: []string{"elementA", "elementB", "elementC"},
+			},
+			want: []string{"elementC", "elementB", "elementA"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := SliceStringReverse(tt.args.input)
+			if !internal.AssertStringSliceEqual(t, tt.want, got) {
+				t.Errorf("SliceStringReverse() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

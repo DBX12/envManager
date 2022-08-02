@@ -58,3 +58,13 @@ func SliceStringEqual(a []string, b []string) bool {
 	}
 	return true
 }
+
+//SliceStringReverse reverses the input slice. If the input slice is nil, an empty slice is returned.
+func SliceStringReverse(input []string) []string {
+	length := len(input)
+	output := make([]string, length)
+	for i := 0; i < length; i++ {
+		output[length-i-1] = input[i]
+	}
+	return output
+}
