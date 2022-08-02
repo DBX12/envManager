@@ -88,3 +88,16 @@ func promptYesNo(prompt string) bool {
 	}
 	return response == "Y" || response == "y"
 }
+
+// formatList formats an input slice by adding the prefix and suffix to every item. If the slice
+// is empty, the emptyPlaceholder will be returned without added prefix or suffix
+func formatList(items []string, prefix string, suffix string, emptyPlaceholder string) string {
+	if len(items) == 0 {
+		return emptyPlaceholder
+	}
+	output := make([]string, len(items))
+	for i, item := range items {
+		output[i] = prefix + item + suffix
+	}
+	return strings.Join(output, "")
+}
