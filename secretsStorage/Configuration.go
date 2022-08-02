@@ -36,7 +36,8 @@ func NewConfiguration() Configuration {
 	}
 }
 
-//LoadFromFile loads the config file at the given path. It will merge the current config with the config from the file.
+//LoadFromFile loads the config file at the given path. Calling this method on an existing configuration results
+//in undefined behavior. Call MergeConfigFile if you want to add another configuration to the existing one.
 func (c *Configuration) LoadFromFile(path string) error {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -46,6 +47,51 @@ func (c *Configuration) LoadFromFile(path string) error {
 	err = yaml.Unmarshal(data, &c)
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+//MergeConfigFile merges the configuration of a file into an existing configuration. Will return an error if a storage,
+//profile or mapping of the same name / path already exists and disableCollisionDetection is set to false.
+func (c *Configuration) MergeConfigFile(path string) error {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	fragment := Configuration{}
+
+	err = yaml.Unmarshal(data, &fragment)
+	if err != nil {
+		return err
+	}
+
+	// merging storages
+	for name, storageConfig := range fragment.Storages {
+		_, found := c.Storages[name]
+		if found && !c.Options.DisableCollisionDetection {
+			return errors.Newf("Collision detected, storage name %s is duplicated", name)
+		}
+		c.Storages[name] = storageConfig
+	}
+
+	// merging profiles
+	for name, profileConfig := range fragment.Profiles {
+		_, found := c.Profiles[name]
+		if found && !c.Options.DisableCollisionDetection {
+			return errors.Newf("Collision detected, profile name %s is duplicated", name)
+		}
+		c.Profiles[name] = profileConfig
+	}
+
+	// merging directory mappings
+	for name, mappingConfig := range fragment.DirectoryMapping {
+		_, found := c.DirectoryMapping[name]
+		if found && !c.Options.DisableCollisionDetection {
+			return errors.Newf("Collision detected, mapping %s is duplicated", name)
+		}
+		c.DirectoryMapping[name] = mappingConfig
 	}
 
 	return nil
