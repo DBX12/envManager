@@ -10,6 +10,7 @@ covered in the changelog.
 ## [Unreleased]
 ### Added
 - `unload -a` as shorthand for `unload --all`
+- Working directory-aware loading of config files
 ### Changed
 - Directory mappings now load dependencies
 

@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"envManager/secretsStorage"
+	"fmt"
 	"github.com/spf13/cobra"
 	"os"
 	"path"
+	"path/filepath"
 )
 
 var flagConfigFile string
@@ -13,6 +15,8 @@ var flagConfigFile string
 const envManagerLoadedProfilesName = "ENVMANAGER_LOADED"
 
 var version = "unknown"
+
+var homeDir string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -29,7 +33,8 @@ func Execute() {
 }
 
 func init() {
-	homeDir, err := os.UserHomeDir()
+	var err error
+	homeDir, err = os.UserHomeDir()
 	cobra.CheckErr(err)
 	configPath := path.Join(homeDir, ".envManager.yml")
 	// Here you will define your flags and configuration settings.
@@ -54,6 +59,43 @@ func initConfig() {
 	config := secretsStorage.NewConfiguration()
 	err := config.LoadFromFile(flagConfigFile)
 	cobra.CheckErr(err)
+
+	//region location aware config loading
+	dir, err := os.Getwd()
+	cobra.CheckErr(err)
+	var configPaths []string
+
+	// traverse up to the root directory
+	for dir != "/" {
+		cfgFile := filepath.Join(dir, ".envManager.yml")
+		_, statErr := os.Stat(cfgFile)
+		if !os.IsNotExist(statErr) {
+			// note the path if it exists
+			configPaths = append(configPaths, cfgFile)
+		}
+		dir = filepath.Dir(dir)
+	}
+	// add the config file in the homedir to the front (and skip it in the loop) so it is shown in the
+	// "already processed" list
+	configPaths = append([]string{filepath.Join(homeDir, ".envManager.yml")}, configPaths...)
+
+	for i, configPath := range configPaths {
+		if filepath.Dir(configPath) == homeDir {
+			// do not merge the config file in home directory which is already loaded
+			continue
+		}
+		err := config.MergeConfigFile(configPaths[i])
+		if err != nil {
+			_, _ = fmt.Fprintln(os.Stderr, "Failed to merge configuration.\nAlready processed config files:")
+			_, _ = fmt.Fprint(os.Stderr, formatList(configPaths[0:i], "\t- ", "\n", "\t<none>\n"))
+			_, _ = fmt.Fprintf(os.Stderr, "Offending config file:\n\t%s\n", configPath)
+			_, _ = fmt.Fprintln(os.Stderr, "Still to process:")
+			_, _ = fmt.Fprint(os.Stderr, formatList(configPaths[i+1:], "\t- ", "\n", "\t<none>\n"))
+			_, _ = fmt.Fprintf(os.Stderr, "Error message:\n\t%s\n", err.Error())
+			os.Exit(1)
+		}
+	}
+	//endregion
 
 	registry := secretsStorage.GetRegistry()
 	for name, storageConfig := range config.Storages {
