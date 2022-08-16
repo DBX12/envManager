@@ -37,13 +37,6 @@ func init() {
 	homeDir, err = os.UserHomeDir()
 	cobra.CheckErr(err)
 	configPath := path.Join(homeDir, ".envManager.yml")
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// Cobra also supports local flags, which will only runLoad
-	// when this action is called directly.
-	//rootCmd.Flags().StringArray("load",nil, "List of profiles to load")
 	rootCmd.PersistentFlags().StringVarP(
 		&flagConfigFile,
 		"config",
