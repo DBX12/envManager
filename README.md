@@ -96,6 +96,13 @@ Yes.
 
 No, circular dependencies are resolved without looping endlessly.
 
+### Can I use multiple configuration files?
+
+Yes, since version 1.4.0 you can create `.envManager.yml` files in any directory. When running an envManager command,
+all config files from the current working directory up to the root are loaded with decreasing priority (meaning the
+config file in the current working directory overrides one closer to the file system root and the one in your home
+directory). You can view the discovered config files and their order by running `envManager debug files`.
+
 ## Extending envManager
 
 The envManager can be easily extended by programming other storage adapters. Each storage adapter must implement the
