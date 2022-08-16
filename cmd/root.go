@@ -57,20 +57,20 @@ func initConfig() {
 	cobra.CheckErr(err)
 
 	// use helper function to find all config files upward from here
-	configPaths := discoverConfigFiles(dir, flagConfigFile)
+	configFiles := discoverConfigFiles(dir, flagConfigFile)
 
-	for i, configPath := range configPaths {
-		if configPath == flagConfigFile {
+	for i, configFile := range configFiles {
+		if configFile == flagConfigFile {
 			// do not merge the main config file as it was loaded with config.LoadFromFile()
 			continue
 		}
-		err := config.MergeConfigFile(configPaths[i])
+		err := config.MergeConfigFile(configFiles[i])
 		if err != nil {
 			_, _ = fmt.Fprintln(os.Stderr, "Failed to merge configuration.\nAlready processed config files:")
-			_, _ = fmt.Fprint(os.Stderr, formatList(configPaths[0:i], "\t- ", "\n", "\t<none>\n"))
-			_, _ = fmt.Fprintf(os.Stderr, "Offending config file:\n\t%s\n", configPath)
+			_, _ = fmt.Fprint(os.Stderr, formatList(configFiles[0:i], "\t- ", "\n", "\t<none>\n"))
+			_, _ = fmt.Fprintf(os.Stderr, "Offending config file:\n\t%s\n", configFile)
 			_, _ = fmt.Fprintln(os.Stderr, "Still to process:")
-			_, _ = fmt.Fprint(os.Stderr, formatList(configPaths[i+1:], "\t- ", "\n", "\t<none>\n"))
+			_, _ = fmt.Fprint(os.Stderr, formatList(configFiles[i+1:], "\t- ", "\n", "\t<none>\n"))
 			_, _ = fmt.Fprintf(os.Stderr, "Error message:\n\t%s\n", err.Error())
 			os.Exit(1)
 		}
