@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 	"path"
-	"path/filepath"
 )
 
 var flagConfigFile string
@@ -56,25 +55,13 @@ func initConfig() {
 	//region location aware config loading
 	dir, err := os.Getwd()
 	cobra.CheckErr(err)
-	var configPaths []string
 
-	// traverse up to the root directory
-	for dir != "/" {
-		cfgFile := filepath.Join(dir, ".envManager.yml")
-		_, statErr := os.Stat(cfgFile)
-		if !os.IsNotExist(statErr) {
-			// note the path if it exists
-			configPaths = append(configPaths, cfgFile)
-		}
-		dir = filepath.Dir(dir)
-	}
-	// add the config file in the homedir to the front (and skip it in the loop) so it is shown in the
-	// "already processed" list
-	configPaths = append([]string{filepath.Join(homeDir, ".envManager.yml")}, configPaths...)
+	// use helper function to find all config files upward from here
+	configPaths := discoverConfigFiles(dir, flagConfigFile)
 
 	for i, configPath := range configPaths {
-		if filepath.Dir(configPath) == homeDir {
-			// do not merge the config file in home directory which is already loaded
+		if configPath == flagConfigFile {
+			// do not merge the main config file as it was loaded with config.LoadFromFile()
 			continue
 		}
 		err := config.MergeConfigFile(configPaths[i])
