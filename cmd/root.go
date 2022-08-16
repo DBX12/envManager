@@ -42,7 +42,7 @@ func init() {
 		"config",
 		"c",
 		configPath,
-		"Overrides the default config file to use. Defaults to ~/.envManager.yml",
+		"Overrides the default config file to use.",
 	)
 	_ = rootCmd.MarkPersistentFlagFilename("config", "yml")
 }
