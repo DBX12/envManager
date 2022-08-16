@@ -45,7 +45,7 @@ var configAddMappingCmd = &cobra.Command{
 			configPath = localPath
 		} else {
 			// not working with a local file, edit the global config file
-			configPath = getConfigPath()
+			configPath = flagConfigFile
 		}
 
 		cobra.CheckErr(config.LoadFromFile(configPath))

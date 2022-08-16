@@ -50,11 +50,9 @@ var configAddProfileCmd = &cobra.Command{
 		storageAdapter := args[0]
 		profileName := args[1]
 
-		configPath := getConfigPath()
-
 		config := secretsStorage.NewConfiguration()
 		cobra.CheckErr(
-			config.LoadFromFile(configPath),
+			config.LoadFromFile(flagConfigFile),
 		)
 
 		_, profileExists := config.Profiles[profileName]
@@ -63,7 +61,7 @@ var configAddProfileCmd = &cobra.Command{
 				errors.Newf(
 					"the profile %s already exists in the config file %s. Set --force to overwrite it.",
 					profileName,
-					configPath,
+					flagConfigFile,
 				),
 			)
 		}
@@ -109,9 +107,9 @@ var configAddProfileCmd = &cobra.Command{
 
 		config.Profiles[profileName] = profile
 		cobra.CheckErr(
-			config.WriteToFile(configPath, true),
+			config.WriteToFile(flagConfigFile, true),
 		)
-		fmt.Printf("Profile %s has been added to the configuration at %s\n", profileName, configPath)
+		fmt.Printf("Profile %s has been added to the configuration at %s\n", profileName, flagConfigFile)
 	},
 }
 

@@ -62,13 +62,6 @@ func InitConfig(_ *cobra.Command, _ []string) {
 	initConfig()
 }
 
-//getConfigPath gets the config path from the persistent flags of the rootCmd
-func getConfigPath() string {
-	configPath, err := rootCmd.PersistentFlags().GetString("config")
-	cobra.CheckErr(err)
-	return configPath
-}
-
 //promptYesNo shows a prompt for a yes / no question. The (Y|N) is added to the prompt automatically.
 func promptYesNo(prompt string) bool {
 	yesNoPrompt := promptui.Prompt{
