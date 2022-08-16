@@ -8,10 +8,12 @@ import (
 	"github.com/josa42/go-prompt/prompt"
 	"github.com/spf13/cobra"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
 var flagAddMappingSelect bool
+var flagAddMappingLocal bool
 
 // configAddMappingCmd represents the mapping command
 var configAddMappingCmd = &cobra.Command{
@@ -20,10 +22,32 @@ var configAddMappingCmd = &cobra.Command{
 	Long:  `A directory mapping links one or more profiles to the current directory.`,
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		configPath := getConfigPath()
+		var configPath string
 		config := secretsStorage.NewConfiguration()
 		env := environment.NewEnvironment()
 		env.Load()
+
+		workingDir, err := os.Getwd()
+		cobra.CheckErr(err)
+
+		if flagAddMappingLocal {
+			localPath := filepath.Join(workingDir, ".envManager.yml")
+
+			if _, statErr := os.Stat(localPath); os.IsNotExist(statErr) {
+				// file does not exist, create it
+				file, err := os.Create(localPath)
+				cobra.CheckErr(err)
+				err = file.Close()
+				cobra.CheckErr(err)
+			}
+
+			// file exists (now), overwrite config path
+			configPath = localPath
+		} else {
+			// not working with a local file, edit the global config file
+			configPath = getConfigPath()
+		}
+
 		cobra.CheckErr(config.LoadFromFile(configPath))
 
 		var profilesToMap []string
@@ -48,8 +72,6 @@ var configAddMappingCmd = &cobra.Command{
 			}
 		}
 
-		workingDir, err := os.Getwd()
-		cobra.CheckErr(err)
 		config.DirectoryMapping[workingDir] = profilesToMap
 
 		cobra.CheckErr(
@@ -62,4 +84,5 @@ var configAddMappingCmd = &cobra.Command{
 func init() {
 	configAddCmd.AddCommand(configAddMappingCmd)
 	configAddMappingCmd.Flags().BoolVarP(&flagAddMappingSelect, "select", "s", false, "Select profiles interactively")
+	configAddMappingCmd.Flags().BoolVarP(&flagAddMappingLocal, "local", "l", false, "Add to local config in this working directory instead of the global config file")
 }

@@ -11,6 +11,7 @@ covered in the changelog.
 ### Added
 - `unload -a` as shorthand for `unload --all`
 - Working directory-aware loading of config files
+- `--local` switch for `config add mapping`
 ### Changed
 - Directory mappings now load dependencies
 
