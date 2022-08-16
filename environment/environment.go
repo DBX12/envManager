@@ -27,6 +27,7 @@ func NewEnvironment() Environment {
 	}
 }
 
+// Load reads the current shell's environment variables and stores them to the current property of the Environment object
 func (e *Environment) Load() {
 	mapped := os.Environ()
 	for _, element := range mapped {
