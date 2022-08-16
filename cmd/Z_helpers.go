@@ -8,6 +8,8 @@ import (
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"gopkg.in/errgo.v2/fmt/errors"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -100,4 +102,32 @@ func formatList(items []string, prefix string, suffix string, emptyPlaceholder s
 		output[i] = prefix + item + suffix
 	}
 	return strings.Join(output, "")
+}
+
+//discoverConfigFiles traverses from startDir to the file system root and list
+//all envManager config files. If it encounters the mainConfigFile, it will not
+//add the file to the list of discovered files again (since it is already added
+//as first file). The file with the highest precedence comes last, which means
+//that the main config file has the lowest precedence.
+func discoverConfigFiles(startDir string, mainConfigFile string) []string {
+	var configFiles []string
+	dir := startDir
+	// traverse up to the root directory
+	for dir != "/" {
+		cfgFile := filepath.Join(dir, ".envManager.yml")
+
+		// do not add the main config file to configPaths, will be done at the end
+		if cfgFile != mainConfigFile {
+			_, statErr := os.Stat(cfgFile)
+			if !os.IsNotExist(statErr) {
+				// note the path if it exists
+				configFiles = append(configFiles, cfgFile)
+			}
+		}
+		dir = filepath.Dir(dir)
+	}
+
+	// add the main config file as final file, so it becomes the first (least precedence) after reversing the slice
+	configFiles = append(configFiles, mainConfigFile)
+	return helper.SliceStringReverse(configFiles)
 }
