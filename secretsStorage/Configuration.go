@@ -1,6 +1,7 @@
 package secretsStorage
 
 import (
+	"envManager/helper"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -22,8 +23,19 @@ type Storage struct {
 //Options controls the general behavior of envManager. It is only read from the config file in the home directory and
 //cannot be overridden by other config files.
 type Options struct {
-	//DisableCollisionDetection allows overwriting profiles, storages and mappings instead of returning an error
+	//DisableCollisionDetection allows overwriting all profiles, storages and mappings instead of returning an error
+	//setting this value to true makes CollisionDetectionIgnore meaningless.
 	DisableCollisionDetection bool `yaml:"disableCollisionDetection"`
+	//CollisionDetectionIgnore allows for fine-grained control over which collisions you want to permit. This setting
+	//is ignored when DisableCollisionDetection is set to true.
+	CollisionDetectionIgnore CollisionDetectionIgnore `yaml:"collisionDetectionIgnore,omitempty"`
+}
+
+// CollisionDetectionIgnore allows overwriting for the listed storages / profiles / mappings only.
+type CollisionDetectionIgnore struct {
+	Storages []string `yaml:"storages,omitempty"`
+	Profiles []string `yaml:"profiles,omitempty"`
+	Mappings []string `yaml:"mappings,omitempty"`
 }
 
 //NewConfiguration creates a new, empty configuration object
@@ -69,27 +81,33 @@ func (c *Configuration) MergeConfigFile(path string) error {
 
 	// merging storages
 	for name, storageConfig := range fragment.Storages {
-		_, found := c.Storages[name]
-		if found && !c.Options.DisableCollisionDetection {
-			return errors.Newf("Collision detected, storage name %s is duplicated", name)
+		if !c.Options.DisableCollisionDetection {
+			_, found := c.Storages[name]
+			if found && !helper.SliceStringContains(name, c.Options.CollisionDetectionIgnore.Storages) {
+				return errors.Newf("Collision detected, storage name %s is duplicated", name)
+			}
 		}
 		c.Storages[name] = storageConfig
 	}
 
 	// merging profiles
 	for name, profileConfig := range fragment.Profiles {
-		_, found := c.Profiles[name]
-		if found && !c.Options.DisableCollisionDetection {
-			return errors.Newf("Collision detected, profile name %s is duplicated", name)
+		if !c.Options.DisableCollisionDetection {
+			_, found := c.Profiles[name]
+			if found && !helper.SliceStringContains(name, c.Options.CollisionDetectionIgnore.Profiles) {
+				return errors.Newf("Collision detected, profile name %s is duplicated", name)
+			}
 		}
 		c.Profiles[name] = profileConfig
 	}
 
 	// merging directory mappings
 	for name, mappingConfig := range fragment.DirectoryMapping {
-		_, found := c.DirectoryMapping[name]
-		if found && !c.Options.DisableCollisionDetection {
-			return errors.Newf("Collision detected, mapping %s is duplicated", name)
+		if !c.Options.DisableCollisionDetection {
+			_, found := c.DirectoryMapping[name]
+			if found && !helper.SliceStringContains(name, c.Options.CollisionDetectionIgnore.Mappings) {
+				return errors.Newf("Collision detected, mapping %s is duplicated", name)
+			}
 		}
 		c.DirectoryMapping[name] = mappingConfig
 	}
