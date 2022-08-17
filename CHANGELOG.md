@@ -15,6 +15,8 @@ covered in the changelog.
 - Expand `.` in the path of directory mappings
 ### Changed
 - Directory mappings now load dependencies
+### Deprecated
+- The flag `--config` was deprecated due to confusing behavior with directory-aware configuration
 
 ## [1.3.0] - 2022-02-01
 ### Added

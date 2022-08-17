@@ -44,6 +44,7 @@ func init() {
 		"Overrides the default config file to use.",
 	)
 	_ = rootCmd.MarkPersistentFlagFilename("config", "yml")
+	_ = rootCmd.PersistentFlags().MarkDeprecated("config", "since the introduction of directory-aware loading.")
 }
 
 // initConfig reads in config file and ENV variables if set.
