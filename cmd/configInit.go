@@ -14,11 +14,9 @@ var configInitCmd = &cobra.Command{
 		"forced to do so",
 	Run: func(cmd *cobra.Command, args []string) {
 		emptyConfig := secretsStorage.NewConfiguration()
-		configPath, err := rootCmd.PersistentFlags().GetString("config")
+		err := emptyConfig.WriteToFile(flagConfigFile, flagForceConfig)
 		cobra.CheckErr(err)
-		err = emptyConfig.WriteToFile(configPath, flagForceConfig)
-		cobra.CheckErr(err)
-		fmt.Printf("Configuration initialized in %s\n", configPath)
+		fmt.Printf("Configuration initialized in %s\n", flagConfigFile)
 	},
 }
 
