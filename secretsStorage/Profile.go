@@ -11,9 +11,9 @@ type Profile struct {
 	name      string
 	Storage   string            `yaml:"storage"`
 	Path      string            `yaml:"path"`
-	ConstEnv  map[string]string `yaml:"constEnv"`
-	Env       map[string]string `yaml:"env"`
-	DependsOn []string          `yaml:"dependsOn"`
+	ConstEnv  map[string]string `yaml:"constEnv,omitempty"`
+	Env       map[string]string `yaml:"env,omitempty"`
+	DependsOn []string          `yaml:"dependsOn,omitempty"`
 }
 
 //Validate checks the validity of the profile. The storage and all profiles this
