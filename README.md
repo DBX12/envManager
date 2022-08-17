@@ -103,6 +103,25 @@ all config files from the current working directory up to the root are loaded wi
 config file in the current working directory overrides one closer to the file system root and the one in your home
 directory). You can view the discovered config files and their order by running `envManager debug files`.
 
+### Can I use relative paths in directory mappings?
+
+Yes, since version 1.4.0. You can use the `.` to make the mapping relative to the config file. Assume you have your
+terraform code in `/code/terraform-project` and two modules `serviceA` and `serviceB` in it. You would want to put a
+local config file at `/code/terraform-project/.envManager.yml` and write the following into its `directoryMapping`
+section (the comments show how the relative path will be expanded):
+
+```yaml
+directoryMapping:
+  .:            # /code/terraform-project
+    - profile1
+  ./serviceA:   # /code/terraform-project/serviceA
+    - profile2
+  ./serviceB:   # /code/terraform-project/serviceB
+    - profile3
+```
+
+This config works on a different machine where your project is in `/home/user/terraform-project` as well.
+
 ## Extending envManager
 
 The envManager can be easily extended by programming other storage adapters. Each storage adapter must implement the

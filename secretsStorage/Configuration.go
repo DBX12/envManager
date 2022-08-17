@@ -2,10 +2,13 @@ package secretsStorage
 
 import (
 	"envManager/helper"
+	"fmt"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 type Configuration struct {
@@ -103,10 +106,23 @@ func (c *Configuration) MergeConfigFile(path string) error {
 
 	// merging directory mappings
 	for name, mappingConfig := range fragment.DirectoryMapping {
+		oldName := name
+		if name == "." {
+			// resolve special mapping name "." to directory of the file which is currently merged
+			name = filepath.Dir(path)
+		} else if strings.HasPrefix(name, ".") {
+			// mapping name started with . so we replace the dot with the directory of the config file
+			name = strings.Replace(name, ".", filepath.Dir(path), 1)
+		}
+
 		if !c.Options.DisableCollisionDetection {
 			_, found := c.DirectoryMapping[name]
 			if found && !helper.SliceStringContains(name, c.Options.CollisionDetectionIgnore.Mappings) {
-				return errors.Newf("Collision detected, mapping %s is duplicated", name)
+				errorMsg := fmt.Sprintf("Collision detected, mapping %s is duplicated", name)
+				if oldName != name {
+					errorMsg += ". Name was expanded from " + oldName
+				}
+				return errors.Newf(errorMsg)
 			}
 		}
 		c.DirectoryMapping[name] = mappingConfig
