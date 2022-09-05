@@ -8,6 +8,9 @@ The entries for 1.0.0 and 1.1.0 are reconstructed from the git history, so there
 covered in the changelog.
 
 ## [Unreleased]
+
+
+## [1.4.0] - 2022-09-05
 ### Added
 - `unload -a` as shorthand for `unload --all`
 - Working directory-aware loading of config files
@@ -37,7 +40,8 @@ covered in the changelog.
 Initial version
 
 
-[Unreleased]: https://github.com/DBX12/envManager/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/DBX12/envManager/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/DBX12/envManager/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/DBX12/envManager/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/DBX12/envManager/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/DBX12/envManager/compare/v1.0.0...v1.1.0
