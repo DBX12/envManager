@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-//Environment contains the current environment, variables which will be added to it and variables which will be removed
-//from it the next time WriteStatements is called.
+// Environment contains the current environment, variables which will be added to it and variables which will be removed
+// from it the next time WriteStatements is called.
 type Environment struct {
 	//current holds the shell's environment after calling Load
 	current map[string]string
@@ -18,7 +18,7 @@ type Environment struct {
 	delVars map[string]bool
 }
 
-//NewEnvironment creates a new Environment object and initializes the fields with empty maps / slices
+// NewEnvironment creates a new Environment object and initializes the fields with empty maps / slices
 func NewEnvironment() Environment {
 	return Environment{
 		current: map[string]string{},
@@ -36,8 +36,8 @@ func (e *Environment) Load() {
 	}
 }
 
-//Retrieves a currently set environment variable by the given key. If it does not
-//exist, the defaultValue is returned.
+// GetCurrent retrieves a currently set environment variable by the given key.
+// If it does not exist, the defaultValue is returned.
 func (e *Environment) GetCurrent(key string, defaultValue string) string {
 	value, exists := e.current[key]
 	if !exists {
@@ -46,8 +46,8 @@ func (e *Environment) GetCurrent(key string, defaultValue string) string {
 	return value
 }
 
-//Set adds an environment variable with given key and value to the list of variables to set. Call WriteStatements to
-//create export statements consumable by a shell.
+// Set adds an environment variable with given key and value to the list of variables to set. Call WriteStatements to
+// create export statements consumable by a shell.
 func (e *Environment) Set(key string, value string) error {
 	if key == "" {
 		return errors.New("key must not be empty")
@@ -56,7 +56,7 @@ func (e *Environment) Set(key string, value string) error {
 	return nil
 }
 
-//Unset removes an already set environment variable. Also removes it from the list of variables which will be set.
+// Unset removes an already set environment variable. Also removes it from the list of variables which will be set.
 func (e *Environment) Unset(key string) error {
 	if key == "" {
 		return errors.New("key must not be empty")
@@ -66,7 +66,7 @@ func (e *Environment) Unset(key string) error {
 	return nil
 }
 
-//WriteStatements writes a list of export and unset statements to update the environment of a shell.
+// WriteStatements writes a list of export and unset statements to update the environment of a shell.
 func (e *Environment) WriteStatements() string {
 	var output []string
 	for key, value := range e.addVars {

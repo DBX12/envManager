@@ -14,8 +14,8 @@ import (
 	"strings"
 )
 
-//CompleteProfiles provides completion for a command which expects at least one
-//profile.
+// CompleteProfiles provides completion for a command which expects at least one
+// profile.
 func CompleteProfiles(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	initConfig()
 
@@ -41,8 +41,8 @@ func CompleteProfiles(cmd *cobra.Command, args []string, toComplete string) ([]s
 	return completions, cobra.ShellCompDirectiveNoFileComp
 }
 
-//CompleteStorages provides completion for a command which expects at least one
-//storage.
+// CompleteStorages provides completion for a command which expects at least one
+// storage.
 func CompleteStorages(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	initConfig()
 	// complete profiles
@@ -56,13 +56,13 @@ func CompleteStorages(_ *cobra.Command, args []string, toComplete string) ([]str
 	return completions, cobra.ShellCompDirectiveNoFileComp
 }
 
-//InitConfig is a wrapper around the simple initConfig() method. With this adapter you can write
-//PreRun: InitConfig, in your command object.
+// InitConfig is a wrapper around the simple initConfig() method. With this adapter you can write
+// PreRun: InitConfig, in your command object.
 func InitConfig(_ *cobra.Command, _ []string) {
 	initConfig()
 }
 
-//promptYesNo shows a prompt for a yes / no question. The (Y|N) is added to the prompt automatically.
+// promptYesNo shows a prompt for a yes / no question. The (Y|N) is added to the prompt automatically.
 func promptYesNo(prompt string) bool {
 	yesNoPrompt := promptui.Prompt{
 		Label: fmt.Sprintf("%s (Y|N)", prompt),
@@ -97,11 +97,11 @@ func formatList(items []string, prefix string, suffix string, emptyPlaceholder s
 	return strings.Join(output, "")
 }
 
-//discoverConfigFiles traverses from startDir to the file system root and list
-//all envManager config files. If it encounters the mainConfigFile, it will not
-//add the file to the list of discovered files again (since it is already added
-//as first file). The file with the highest precedence comes last, which means
-//that the main config file has the lowest precedence.
+// discoverConfigFiles traverses from startDir to the file system root and list
+// all envManager config files. If it encounters the mainConfigFile, it will not
+// add the file to the list of discovered files again (since it is already added
+// as first file). The file with the highest precedence comes last, which means
+// that the main config file has the lowest precedence.
 func discoverConfigFiles(startDir string, mainConfigFile string) []string {
 	var configFiles []string
 	dir := startDir

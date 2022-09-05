@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//flagForceConfig represents the status of the boolean --force flag
+// flagForceConfig represents the status of the boolean --force flag
 var flagForceConfig bool
 
 // configCmd represents the config command

@@ -4,7 +4,7 @@ import (
 	"gopkg.in/errgo.v2/fmt/errors"
 )
 
-//StorageAdapter provides methods to interact with a secrets secretsStorage (e.g. keepass)
+// StorageAdapter provides methods to interact with a secrets secretsStorage (e.g. keepass)
 type StorageAdapter interface {
 	//GetEntry retrieves an entry from the secretsStorage. The entry is addressed by the key parameter, it depends on the
 	//implementation of the StorageAdapter how the key is interpreted.
@@ -20,9 +20,9 @@ type StorageAdapter interface {
 	GetDefaultConfig() map[string]string
 }
 
-//CreateStorageAdapter is a factory method which creates a specific storage adapter determined by data["type"] and calls
-//StorageAdapter.Validate on the created instance. Should StorageAdapter.Validate return an error, it is handed through
-//to the caller of CreateStorageAdapter
+// CreateStorageAdapter is a factory method which creates a specific storage adapter determined by data["type"] and calls
+// StorageAdapter.Validate on the created instance. Should StorageAdapter.Validate return an error, it is handed through
+// to the caller of CreateStorageAdapter
 func CreateStorageAdapter(name string, config Storage) (StorageAdapter, error) {
 	var storage StorageAdapter
 	switch config.StorageType {
@@ -46,7 +46,7 @@ func CreateStorageAdapter(name string, config Storage) (StorageAdapter, error) {
 	return storage, err
 }
 
-//GetStorageAdapterTypes returns a list of type identifiers for storage adapters
+// GetStorageAdapterTypes returns a list of type identifiers for storage adapters
 func GetStorageAdapterTypes() []string {
 	return []string{
 		KeepassTypeIdentifier,
@@ -54,7 +54,7 @@ func GetStorageAdapterTypes() []string {
 	}
 }
 
-//GetStorageAdapterDefaultConfig returns the default config for a given storage type
+// GetStorageAdapterDefaultConfig returns the default config for a given storage type
 func GetStorageAdapterDefaultConfig(storageType string) (map[string]string, error) {
 	var storage StorageAdapter
 	switch storageType {

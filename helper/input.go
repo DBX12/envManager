@@ -5,13 +5,13 @@ import (
 	"sync"
 )
 
-//input is an abstraction layer for retrieving user input. It is to be used as
-//singleton via GetInput.
+// input is an abstraction layer for retrieving user input. It is to be used as
+// singleton via GetInput.
 type input struct {
 	Inputs []string
 }
 
-//inputInstance holds the singleton instance
+// inputInstance holds the singleton instance
 var inputInstance *input
 var inputSingletonLock = &sync.Mutex{}
 
@@ -30,15 +30,15 @@ func GetInput() *input {
 	return inputInstance
 }
 
-//hasPresetInputValues checks that the Inputs slice is defined and contains at
-//least one entry.
+// hasPresetInputValues checks that the Inputs slice is defined and contains at
+// least one entry.
 func (i *input) hasPresetInputValues() bool {
 	return i.Inputs != nil && len(i.Inputs) > 0
 }
 
-//getPresetInputValue returns the first value in the Inputs slice.
-//This method will panic if the slice is not defined or empty!
-//Check with hasPresetInputValues that there are presets before calling this method.
+// getPresetInputValue returns the first value in the Inputs slice.
+// This method will panic if the slice is not defined or empty!
+// Check with hasPresetInputValues that there are presets before calling this method.
 func (i *input) getPresetInputValue() string {
 	out := i.Inputs[0]
 	if len(i.Inputs) >= 2 {
@@ -51,9 +51,9 @@ func (i *input) getPresetInputValue() string {
 	return out
 }
 
-//PromptPassword prompts for a password and hides the input with the mask value.
-//Setting the mask to 0 disables the masking. If you are doing that, you can
-//call PromptString as well.
+// PromptPassword prompts for a password and hides the input with the mask value.
+// Setting the mask to 0 disables the masking. If you are doing that, you can
+// call PromptString as well.
 func (i *input) PromptPassword(prompt string, mask rune) (string, error) {
 	if i.hasPresetInputValues() {
 		return i.getPresetInputValue(), nil
@@ -71,7 +71,7 @@ func (i *input) PromptPassword(prompt string, mask rune) (string, error) {
 	return result, nil
 }
 
-//PromptString prompts the user for an input
+// PromptString prompts the user for an input
 func (i *input) PromptString(prompt string) (string, error) {
 	return i.PromptPassword(prompt, 0)
 }

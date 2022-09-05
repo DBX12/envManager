@@ -16,8 +16,8 @@ type Profile struct {
 	DependsOn []string          `yaml:"dependsOn,omitempty"`
 }
 
-//Validate checks the validity of the profile. The storage and all profiles this
-//profile depends on must be known to the registry.
+// Validate checks the validity of the profile. The storage and all profiles this
+// profile depends on must be known to the registry.
 func (p Profile) Validate() []string {
 	var out []string
 	registry := GetRegistry()
@@ -32,8 +32,8 @@ func (p Profile) Validate() []string {
 	return out
 }
 
-//AddToEnvironment adds the environment variables defined by this profile to the
-//given environment.Environment instance.
+// AddToEnvironment adds the environment variables defined by this profile to the
+// given environment.Environment instance.
 func (p *Profile) AddToEnvironment(env *environment.Environment) error {
 	// load constEnv
 	for key, value := range p.ConstEnv {
@@ -67,8 +67,8 @@ func (p *Profile) AddToEnvironment(env *environment.Environment) error {
 	return nil
 }
 
-//RemoveFromEnvironment removes the environment variables defined by this profile
-//from the given environment.Environment instance.
+// RemoveFromEnvironment removes the environment variables defined by this profile
+// from the given environment.Environment instance.
 func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
 	// unload constEnv
 	for key := range p.ConstEnv {
@@ -90,12 +90,12 @@ func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
 	return nil
 }
 
-//SetName is a setter for Profile.name
+// SetName is a setter for Profile.name
 func (p *Profile) SetName(name string) {
 	p.name = name
 }
 
-//GetDependencies gets the dependencies of this profile and its dependencies.
+// GetDependencies gets the dependencies of this profile and its dependencies.
 func (p Profile) GetDependencies(alreadyVisited []string) ([]string, error) {
 	var dependencies []string
 	alreadyVisited = append(alreadyVisited, p.name)

@@ -23,8 +23,8 @@ type Storage struct {
 	Config      map[string]string `yaml:"config"`
 }
 
-//Options controls the general behavior of envManager. It is only read from the config file in the home directory and
-//cannot be overridden by other config files.
+// Options controls the general behavior of envManager. It is only read from the config file in the home directory and
+// cannot be overridden by other config files.
 type Options struct {
 	//DisableCollisionDetection allows overwriting all profiles, storages and mappings instead of returning an error
 	//setting this value to true makes CollisionDetectionIgnore meaningless.
@@ -41,7 +41,7 @@ type CollisionDetectionIgnore struct {
 	Mappings []string `yaml:"mappings,omitempty"`
 }
 
-//NewConfiguration creates a new, empty configuration object
+// NewConfiguration creates a new, empty configuration object
 func NewConfiguration() Configuration {
 	return Configuration{
 		Options:          Options{},
@@ -51,8 +51,8 @@ func NewConfiguration() Configuration {
 	}
 }
 
-//LoadFromFile loads the config file at the given path. Calling this method on an existing configuration results
-//in undefined behavior. Call MergeConfigFile if you want to add another configuration to the existing one.
+// LoadFromFile loads the config file at the given path. Calling this method on an existing configuration results
+// in undefined behavior. Call MergeConfigFile if you want to add another configuration to the existing one.
 func (c *Configuration) LoadFromFile(path string) error {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -67,8 +67,8 @@ func (c *Configuration) LoadFromFile(path string) error {
 	return nil
 }
 
-//MergeConfigFile merges the configuration of a file into an existing configuration. Will return an error if a storage,
-//profile or mapping of the same name / path already exists and disableCollisionDetection is set to false.
+// MergeConfigFile merges the configuration of a file into an existing configuration. Will return an error if a storage,
+// profile or mapping of the same name / path already exists and disableCollisionDetection is set to false.
 func (c *Configuration) MergeConfigFile(path string) error {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -131,8 +131,8 @@ func (c *Configuration) MergeConfigFile(path string) error {
 	return nil
 }
 
-//WriteToFile writes the current config to given path. It will not overwrite an existing file
-//except when replace is set to true.
+// WriteToFile writes the current config to given path. It will not overwrite an existing file
+// except when replace is set to true.
 func (c Configuration) WriteToFile(path string, replace bool) error {
 	data, err := yaml.Marshal(c)
 	if err != nil {

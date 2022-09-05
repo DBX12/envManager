@@ -2,9 +2,9 @@ package helper
 
 import "strings"
 
-//Completion filters possibleValues by removing excludedValues and values not
-//matching withPrefix. excludedValues can be set to nil if no values are to be
-//excluded. withPrefix can be set to empty string do disable filtering by prefix
+// Completion filters possibleValues by removing excludedValues and values not
+// matching withPrefix. excludedValues can be set to nil if no values are to be
+// excluded. withPrefix can be set to empty string do disable filtering by prefix
 func Completion(possibleValues []string, excludedValues []string, withPrefix string) []string {
 	var out []string
 	for _, value := range possibleValues {
