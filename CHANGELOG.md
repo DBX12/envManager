@@ -8,7 +8,8 @@ The entries for 1.0.0 and 1.1.0 are reconstructed from the git history, so there
 covered in the changelog.
 
 ## [Unreleased]
-
+### Changed
+- Toolchain updated to go 1.23.0
 
 ## [1.4.0] - 2022-09-05
 ### Added

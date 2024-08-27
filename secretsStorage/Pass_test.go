@@ -34,7 +34,7 @@ func TestPass_GetEntry_successful(t *testing.T) {
 		key,
 		"",
 	).Return(
-		secrets.NewKVWithData(
+		secrets.NewAKVWithData(
 			"pass",
 			map[string][]string{
 				"username": {"john.doe"},
@@ -117,7 +117,7 @@ func TestPass_GetEntry_successfulWithPrefix(t *testing.T) {
 		"personal/"+key,
 		"",
 	).Return(
-		secrets.NewKVWithData(
+		secrets.NewAKVWithData(
 			"pass",
 			map[string][]string{
 				"username": {"john.doe"},
