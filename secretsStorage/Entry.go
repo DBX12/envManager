@@ -3,6 +3,8 @@ package secretsStorage
 import (
 	"errors"
 	"fmt"
+	"maps"
+	"slices"
 )
 
 // Entry is a storage independent representation of an entry
@@ -42,9 +44,6 @@ func (e *Entry) GetAttribute(key string) (*string, error) {
 
 // GetAttributeNames returns a slice containing keys of the attributes of this entry.
 func (e Entry) GetAttributeNames() []string {
-	var out []string
-	for key, _ := range e.attributes {
-		out = append(out, key)
-	}
-	return out
+	keys := maps.Keys[map[string]string](e.attributes)
+	return slices.Sorted(keys)
 }
