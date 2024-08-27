@@ -19,7 +19,7 @@ type Profile struct {
 
 // Validate checks the validity of the profile. The storage and all profiles this
 // profile depends on must be known to the registry.
-func (p Profile) Validate() []string {
+func (p *Profile) Validate() []string {
 	var out []string
 	registry := GetRegistry()
 	if !registry.HasStorage(p.Storage) {
@@ -70,7 +70,7 @@ func (p *Profile) AddToEnvironment(env *environment.Environment) error {
 
 // RemoveFromEnvironment removes the environment variables defined by this profile
 // from the given environment.Environment instance.
-func (p Profile) RemoveFromEnvironment(env *environment.Environment) error {
+func (p *Profile) RemoveFromEnvironment(env *environment.Environment) error {
 	// unload constEnv
 	for key := range p.ConstEnv {
 		err := env.Unset(key)
@@ -97,7 +97,7 @@ func (p *Profile) SetName(name string) {
 }
 
 // GetDependencies gets the dependencies of this profile and its dependencies.
-func (p Profile) GetDependencies(alreadyVisited []string) ([]string, error) {
+func (p *Profile) GetDependencies(alreadyVisited []string) ([]string, error) {
 	var dependencies []string
 	alreadyVisited = append(alreadyVisited, p.name)
 	dependencies = append(dependencies, p.DependsOn...)

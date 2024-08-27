@@ -132,7 +132,7 @@ func (c *Configuration) MergeConfigFile(path string) error {
 
 // WriteToFile writes the current config to given path. It will not overwrite an existing file
 // except when replace is set to true.
-func (c Configuration) WriteToFile(path string, replace bool) error {
+func (c *Configuration) WriteToFile(path string, replace bool) error {
 	data, err := yaml.Marshal(c)
 	if err != nil {
 		return err

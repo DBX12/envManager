@@ -19,7 +19,7 @@ a list of all storages is shown.`,
 			// show configured storages
 			fmt.Println("Configured storages:")
 			storages := secretsStorage.GetRegistry().GetAllStorages()
-			for name, _ := range storages {
+			for name := range storages {
 				fmt.Printf("- %s\n", name)
 			}
 			return

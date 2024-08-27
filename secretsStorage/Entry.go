@@ -43,7 +43,7 @@ func (e *Entry) GetAttribute(key string) (*string, error) {
 }
 
 // GetAttributeNames returns a slice containing keys of the attributes of this entry.
-func (e Entry) GetAttributeNames() []string {
+func (e *Entry) GetAttributeNames() []string {
 	keys := maps.Keys[map[string]string](e.attributes)
 	return slices.Sorted(keys)
 }

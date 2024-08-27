@@ -121,7 +121,8 @@ func discoverConfigFiles(startDir string, mainConfigFile string) []string {
 		dir = filepath.Dir(dir)
 	}
 
-	// add the main config file as final file, so it becomes the first (least precedence) after reversing the slice
+	// add the main config file as final file, so it becomes the first (its entries have the least precedence) after
+	// reversing the slice
 	configFiles = append(configFiles, mainConfigFile)
 	slices.Reverse(configFiles)
 	return configFiles

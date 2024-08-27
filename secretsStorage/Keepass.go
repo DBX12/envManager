@@ -17,11 +17,11 @@ type Keepass struct {
 	database *gokeepasslib.Database
 }
 
-func (k Keepass) IsCaseSensitive() bool {
+func (k *Keepass) IsCaseSensitive() bool {
 	return true
 }
 
-func (k Keepass) Validate() (error, []string) {
+func (k *Keepass) Validate() (error, []string) {
 	var out []string
 	validationFailed := false
 
@@ -74,7 +74,7 @@ func (k *Keepass) GetEntry(key string) (*Entry, error) {
 	return entry, nil
 }
 
-func (k Keepass) GetDefaultConfig() map[string]string {
+func (k *Keepass) GetDefaultConfig() map[string]string {
 	return map[string]string{
 		"path": "",
 	}

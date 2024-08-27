@@ -2,7 +2,7 @@ package helper
 
 import "slices"
 
-// SliceStringRemove removes all occurrences of the given value from an slice of
+// SliceStringRemove removes all occurrences of the given value from a slice of
 // strings
 func SliceStringRemove(value string, slice []string) []string {
 	return slices.DeleteFunc(slice, func(s string) bool {
