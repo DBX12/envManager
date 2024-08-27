@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"slices"
@@ -54,7 +53,7 @@ func NewConfiguration() Configuration {
 // LoadFromFile loads the config file at the given path. Calling this method on an existing configuration results
 // in undefined behavior. Call MergeConfigFile if you want to add another configuration to the existing one.
 func (c *Configuration) LoadFromFile(path string) error {
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -70,7 +69,7 @@ func (c *Configuration) LoadFromFile(path string) error {
 // MergeConfigFile merges the configuration of a file into an existing configuration. Will return an error if a storage,
 // profile or mapping of the same name / path already exists and disableCollisionDetection is set to false.
 func (c *Configuration) MergeConfigFile(path string) error {
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -142,7 +141,5 @@ func (c Configuration) WriteToFile(path string, replace bool) error {
 	if fileInfo != nil && !replace {
 		return errors.Newf("Will not overwrite %s without being explicitly told to do so.", path)
 	}
-	err = ioutil.WriteFile(path, data, 0600)
-
-	return err
+	return os.WriteFile(path, data, 0600)
 }

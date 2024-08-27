@@ -3,7 +3,6 @@ package secretsStorage
 import (
 	"bytes"
 	"envManager/internal"
-	"io/ioutil"
 	"os"
 	"path"
 	"reflect"
@@ -239,8 +238,8 @@ func TestConfiguration_WriteToFile(t *testing.T) {
 			}
 
 			// check that file contents are equal
-			expectedContent, _ := ioutil.ReadFile(tt.wantedFile)
-			actualContent, _ := ioutil.ReadFile(tt.args.path)
+			expectedContent, _ := os.ReadFile(tt.wantedFile)
+			actualContent, _ := os.ReadFile(tt.args.path)
 
 			if !bytes.Equal(expectedContent, actualContent) {
 				t.Errorf("File contents differ")
