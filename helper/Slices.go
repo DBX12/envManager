@@ -24,19 +24,6 @@ func SliceStringUnique(input []string) []string {
 	return output
 }
 
-// SliceStringEqual checks if the slices contain the same string values without
-// considering the order of the items. This means [foo bar] is equal to
-// [bar foo] but not equal to [foo baz].
-func SliceStringEqual(a []string, b []string) bool {
-	// return early if the lengths do not match to avoid costly sorting and comparing
-	if len(a) != len(b) {
-		return false
-	}
-	slices.Sort(a)
-	slices.Sort(b)
-	return slices.Compare(a, b) == 0
-}
-
 // SliceStringReverse reverses the input slice. If the input slice is nil, an empty slice is returned.
 func SliceStringReverse(input []string) []string {
 	slices.Reverse(input)

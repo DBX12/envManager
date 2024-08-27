@@ -103,66 +103,6 @@ func TestSliceStringUnique(t *testing.T) {
 	}
 }
 
-func TestSliceStringEqual(t *testing.T) {
-	type args struct {
-		a []string
-		b []string
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		{
-			name: "Empty slices",
-			args: args{
-				a: []string{},
-				b: []string{},
-			},
-			want: true,
-		},
-		{
-			name: "Differing length",
-			args: args{
-				a: []string{"foo", "bar"},
-				b: []string{"foo", "bar", "baz"},
-			},
-			want: false,
-		},
-		{
-			name: "Equal slices, different order",
-			args: args{
-				a: []string{"foo", "bar"},
-				b: []string{"bar", "foo"},
-			},
-			want: true,
-		},
-		{
-			name: "Equal slices, equal order",
-			args: args{
-				a: []string{"foo", "bar"},
-				b: []string{"foo", "bar"},
-			},
-			want: true,
-		},
-		{
-			name: "Unequal slices",
-			args: args{
-				a: []string{"foo", "bar"},
-				b: []string{"foo", "baz"},
-			},
-			want: false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := SliceStringEqual(tt.args.a, tt.args.b); got != tt.want {
-				t.Errorf("SliceStringEqual() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestSliceStringReverse(t *testing.T) {
 	type args struct {
 		input []string
