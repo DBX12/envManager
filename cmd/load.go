@@ -6,6 +6,7 @@ import (
 	"envManager/secretsStorage"
 	"github.com/spf13/cobra"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -42,7 +43,7 @@ func runLoad(_ *cobra.Command, args []string) {
 		profile, err := registry.GetProfile(name)
 		cobra.CheckErr(err)
 
-		if helper.SliceStringContains(name, profilesToLoad) {
+		if slices.Contains(profilesToLoad, name) {
 			// this profile is already loaded, thus all its dependencies are
 			// selected for loading too
 			continue

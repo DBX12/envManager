@@ -1,13 +1,13 @@
 package secretsStorage
 
 import (
-	"envManager/helper"
 	"fmt"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 )
 
@@ -86,7 +86,7 @@ func (c *Configuration) MergeConfigFile(path string) error {
 	for name, storageConfig := range fragment.Storages {
 		if !c.Options.DisableCollisionDetection {
 			_, found := c.Storages[name]
-			if found && !helper.SliceStringContains(name, c.Options.CollisionDetectionIgnore.Storages) {
+			if found && !slices.Contains(c.Options.CollisionDetectionIgnore.Storages, name) {
 				return errors.Newf("Collision detected, storage name %s is duplicated", name)
 			}
 		}
@@ -97,7 +97,7 @@ func (c *Configuration) MergeConfigFile(path string) error {
 	for name, profileConfig := range fragment.Profiles {
 		if !c.Options.DisableCollisionDetection {
 			_, found := c.Profiles[name]
-			if found && !helper.SliceStringContains(name, c.Options.CollisionDetectionIgnore.Profiles) {
+			if found && !slices.Contains(c.Options.CollisionDetectionIgnore.Profiles, name) {
 				return errors.Newf("Collision detected, profile name %s is duplicated", name)
 			}
 		}
@@ -117,7 +117,7 @@ func (c *Configuration) MergeConfigFile(path string) error {
 
 		if !c.Options.DisableCollisionDetection {
 			_, found := c.DirectoryMapping[name]
-			if found && !helper.SliceStringContains(name, c.Options.CollisionDetectionIgnore.Mappings) {
+			if found && !slices.Contains(c.Options.CollisionDetectionIgnore.Mappings, name) {
 				errorMsg := fmt.Sprintf("Collision detected, mapping %s is duplicated", name)
 				if oldName != name {
 					errorMsg += ". Name was expanded from " + oldName

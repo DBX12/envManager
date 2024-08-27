@@ -5,6 +5,7 @@ import (
 	"envManager/helper"
 	"fmt"
 	"gopkg.in/errgo.v2/fmt/errors"
+	"slices"
 )
 
 type Profile struct {
@@ -101,7 +102,7 @@ func (p Profile) GetDependencies(alreadyVisited []string) ([]string, error) {
 	alreadyVisited = append(alreadyVisited, p.name)
 	dependencies = append(dependencies, p.DependsOn...)
 	for _, name := range p.DependsOn {
-		if helper.SliceStringContains(name, alreadyVisited) {
+		if slices.Contains(alreadyVisited, name) {
 			// do not load dependencies of a profile we already visited
 			continue
 		}

@@ -1,12 +1,12 @@
 package cmd
 
 import (
-	"envManager/helper"
 	"envManager/secretsStorage"
 	"fmt"
 	"github.com/spf13/cobra"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"regexp"
+	"slices"
 	"strings"
 )
 
@@ -24,7 +24,7 @@ var configAddStorageCmd = &cobra.Command{
 		storageType = args[0]
 		storageName = args[1]
 		supportedTypes := secretsStorage.GetStorageAdapterTypes()
-		if !helper.SliceStringContains(storageType, supportedTypes) {
+		if !slices.Contains(supportedTypes, storageType) {
 			return errors.Newf("type %s is not known. Supported types: %s", storageType, strings.Join(supportedTypes, "\n"))
 		}
 		validName, err := regexp.MatchString("^[a-zA-Z0-9]+$", storageName)

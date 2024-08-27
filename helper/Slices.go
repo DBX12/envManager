@@ -2,11 +2,6 @@ package helper
 
 import "slices"
 
-// SliceStringContains checks if a slice of strings contains a given needle
-func SliceStringContains(needle string, haystack []string) bool {
-	return slices.Contains(haystack, needle)
-}
-
 // SliceStringRemove removes all occurrences of the given value from an slice of
 // strings
 func SliceStringRemove(value string, slice []string) []string {

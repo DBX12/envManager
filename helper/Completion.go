@@ -1,6 +1,9 @@
 package helper
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 // Completion filters possibleValues by removing excludedValues and values not
 // matching withPrefix. excludedValues can be set to nil if no values are to be
@@ -8,7 +11,7 @@ import "strings"
 func Completion(possibleValues []string, excludedValues []string, withPrefix string) []string {
 	var out []string
 	for _, value := range possibleValues {
-		if excludedValues != nil && SliceStringContains(value, excludedValues) {
+		if excludedValues != nil && slices.Contains(excludedValues, value) {
 			// skip this value as it is excluded
 			continue
 		}

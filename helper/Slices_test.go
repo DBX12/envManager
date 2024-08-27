@@ -5,66 +5,6 @@ import (
 	"testing"
 )
 
-func TestSliceStringContains(t *testing.T) {
-	type args struct {
-		needle   string
-		haystack []string
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		{
-			name: "Needle exists",
-			args: args{
-				needle:   "foo",
-				haystack: []string{"bar", "foo", "baz"},
-			},
-			want: true,
-		},
-		{
-			name: "Needle does not exist",
-			args: args{
-				needle:   "faz",
-				haystack: []string{"bar", "foo", "baz"},
-			},
-			want: false,
-		},
-		{
-			name: "Empty haystack",
-			args: args{
-				needle:   "foo",
-				haystack: []string{},
-			},
-			want: false,
-		},
-		{
-			name: "Empty needle",
-			args: args{
-				needle:   "",
-				haystack: []string{"bar", "foo", "baz"},
-			},
-			want: false,
-		},
-		{
-			name: "Empty needle and haystack",
-			args: args{
-				needle:   "",
-				haystack: []string{},
-			},
-			want: false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := SliceStringContains(tt.args.needle, tt.args.haystack); got != tt.want {
-				t.Errorf("SliceStringContains() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestSliceStringRemove(t *testing.T) {
 	type args struct {
 		value string
