@@ -23,9 +23,3 @@ func SliceStringUnique(input []string) []string {
 	}
 	return output
 }
-
-// SliceStringReverse reverses the input slice. If the input slice is nil, an empty slice is returned.
-func SliceStringReverse(input []string) []string {
-	slices.Reverse(input)
-	return input
-}

@@ -11,6 +11,9 @@ covered in the changelog.
 ### Changed
 - Toolchain updated to go 1.23.0
 
+## Changed
+- Several slice functions are now using the slices package from the standard library
+
 ## [1.4.0] - 2022-09-05
 ### Added
 - `unload -a` as shorthand for `unload --all`
