@@ -32,7 +32,7 @@ Zsh:
 
   # You will need to start a new shell for this setup to take effect.`,
 	ValidArgs: []string{"bash", "zsh"},
-	Args:      cobra.ExactValidArgs(1),
+	Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		switch args[0] {
