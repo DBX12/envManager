@@ -4,8 +4,9 @@ import (
 	"envManager/environment"
 	"envManager/helper"
 	"fmt"
-	"gopkg.in/errgo.v2/fmt/errors"
 	"slices"
+
+	"gopkg.in/errgo.v2/fmt/errors"
 )
 
 type Profile struct {
@@ -52,7 +53,7 @@ func (p *Profile) AddToEnvironment(env *environment.Environment) error {
 		}
 		entry, err := (*storage).GetEntry(p.Path)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to load entry '%s': %w", p.Path, err)
 		}
 		for key, attributeName := range p.Env {
 			value, err := entry.GetAttribute(attributeName)
