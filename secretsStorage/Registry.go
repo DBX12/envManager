@@ -71,7 +71,7 @@ func (r *Registry) AddDirectoryMapping(path string, profiles []string) error {
 // name is empty or unknown to the registry
 func (r *Registry) GetProfile(name string) (*Profile, error) {
 	if name == "" {
-		return nil, errors.New("name cannot be empty")
+		return nil, errors.New("profile name cannot be empty")
 	}
 	profile, exists := r.profiles[name]
 	if !exists {
@@ -84,7 +84,7 @@ func (r *Registry) GetProfile(name string) (*Profile, error) {
 // if given name is empty or unknown to the registry
 func (r *Registry) GetStorage(name string) (*StorageAdapter, error) {
 	if name == "" {
-		return nil, errors.New("name cannot be empty")
+		return nil, errors.New("storage name cannot be empty")
 	}
 	storage, exists := r.storages[name]
 	if !exists {
