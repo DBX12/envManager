@@ -76,6 +76,21 @@ func TestSliceStringRemove(t *testing.T) {
 			}
 		})
 	}
+
+	t.Run("do not motify input slice", func(t *testing.T) {
+		slc := []string{"bar", "foo", "baz"}
+		got := SliceStringRemove("foo", slc)
+		want := []string{"bar", "baz"}
+
+		if !internal.AssertStringSliceEqual(t, want, got) {
+			t.Errorf("SliceStringRemove() = %v, want %v", got, want)
+		}
+
+		if !internal.AssertStringSliceEqual(t, []string{"bar", "foo", "baz"}, slc) {
+			t.Errorf("SliceStringRemove() = %v, want %v", slc, []string{"bar", "foo", "baz"})
+		}
+	})
+
 }
 
 func TestSliceStringUnique(t *testing.T) {
