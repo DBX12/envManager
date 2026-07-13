@@ -9,7 +9,7 @@ covered in the changelog.
 
 ## [Unreleased]
 ### Changed
-- Toolchain updated to go 1.23.0
+- Toolchain updated to go 1.25.0
 
 ## Changed
 - Several slice functions are now using the slices package from the standard library
