@@ -5,7 +5,6 @@ import (
 	"envManager/helper"
 	"envManager/secretsStorage"
 	"fmt"
-	"github.com/josa42/go-prompt/prompt"
 	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
@@ -53,13 +52,9 @@ var configAddMappingCmd = &cobra.Command{
 		var profilesToMap []string
 
 		if flagAddMappingSelect {
-			options := prompt.Options{}
-			for _, name := range secretsStorage.GetRegistry().GetProfileNames() {
-				options = append(options, [2]string{name, name})
-			}
-			var canceled bool
-			profilesToMap, canceled = prompt.MultiSelect("Map these profiles:", options)
-			if canceled {
+			options := secretsStorage.GetRegistry().GetProfileNames()
+			profilesToMap, err = helper.Multiselect(options, "Map these profiles:")
+			if err != nil {
 				fmt.Printf("Selection was cancelled, not mapping anything")
 				return
 			}

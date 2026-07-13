@@ -4,11 +4,11 @@ import (
 	"envManager/helper"
 	"envManager/secretsStorage"
 	"fmt"
-	"github.com/josa42/go-prompt/prompt"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"gopkg.in/errgo.v2/fmt/errors"
 	"regexp"
+	"slices"
 )
 
 var flagAddProfileDependencies bool
@@ -177,9 +177,13 @@ func promptAndAddEnvMapping(profile *secretsStorage.Profile) error {
 		if keyErr != nil {
 			return keyErr
 		}
-		value, canceled := prompt.Select("Attribute", options)
-		if !canceled {
-			profile.Env[key] = value
+		p := promptui.Select{
+			Label: "Select attribute",
+			Items: options,
+		}
+		_, result, err := p.Run()
+		if err == nil {
+			profile.Env[key] = result
 		} else {
 			fmt.Println("Last attribute selection was cancelled, not adding this one.")
 		}
@@ -190,7 +194,7 @@ func promptAndAddEnvMapping(profile *secretsStorage.Profile) error {
 	return nil
 }
 
-func makeOptions(storageName string, entryPath string) (prompt.Options, error) {
+func makeOptions(storageName string, entryPath string) ([]string, error) {
 	storagePtr, err := secretsStorage.GetRegistry().GetStorage(storageName)
 	if err != nil {
 		return nil, err
@@ -199,22 +203,16 @@ func makeOptions(storageName string, entryPath string) (prompt.Options, error) {
 	if err != nil {
 		return nil, err
 	}
-	var options prompt.Options
-	for _, attrName := range (*entryPtr).GetAttributeNames() {
-		options = append(options, [2]string{attrName, attrName})
-	}
-	return options, nil
+	return (*entryPtr).GetAttributeNames(), nil
 }
 
 func promptForDependencies(exceptProfileName string) []string {
-	options := prompt.Options{}
-	for _, name := range secretsStorage.GetRegistry().GetProfileNames() {
-		if name == exceptProfileName {
-			continue
-		}
-		options = append(options, [2]string{name, name})
+	options := secretsStorage.GetRegistry().GetProfileNames()
+	idx := slices.Index(options, exceptProfileName)
+	if idx != -1 {
+		options = slices.Delete(options, idx, idx+1)
 	}
-	selection, _ := prompt.MultiSelect("This profile depends on:", options)
+	selection, _ := helper.Multiselect(options, "This profile depends on")
 	return selection
 }
 
